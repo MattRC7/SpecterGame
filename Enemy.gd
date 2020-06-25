@@ -6,3 +6,5 @@ signal attack
 func _ready():
 	self.emit_signal("attack");
 	
+func attack():
+	get_node("AnimationPlayer").play("attack")
