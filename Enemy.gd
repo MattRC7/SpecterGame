@@ -1,10 +1,10 @@
 extends Node
 
 signal attack
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.emit_signal("attack");
+signal idle
 	
 func attack():
 	get_node("AnimationPlayer").play("attack")
+	yield(get_node("AnimationPlayer"), "animation_finished")
+	emit_signal("attack")
+	emit_signal("idle")
