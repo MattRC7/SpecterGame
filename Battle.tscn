@@ -7,20 +7,20 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Enemy" type="Node" parent="."]
+[node name="Enemy" type="Node2D" parent="."]
+position = Vector2( 877.301, 104.7 )
 script = ExtResource( 4 )
 
 [node name="Sprite3" type="Sprite" parent="Enemy"]
-position = Vector2( 886.825, 104.5 )
-scale = Vector2( 6.31406, 5.86875 )
+scale = Vector2( 6.28438, 5.72032 )
 texture = ExtResource( 2 )
 
-[node name="Player" type="Node" parent="."]
+[node name="Player" type="Node2D" parent="."]
+position = Vector2( 152.95, 428.451 )
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Player"]
-position = Vector2( 86.45, 308.75 )
-scale = Vector2( 5.21563, 4.68125 )
+scale = Vector2( 5.30469, 5.00782 )
 texture = ExtResource( 1 )
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
