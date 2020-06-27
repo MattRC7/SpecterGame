@@ -18,36 +18,17 @@ func compute_target_lengths(life_force):
 	var target_total_length = LIFE_BAR_MAX_LENGTH * total_ratio
 	return {"player": target_player_length, "total": target_total_length}	
 
-func update_life_force(life_force):
-	var target_lengths = compute_target_lengths(life_force)
-	tween.interpolate_property(
-		player_life_bar,
-		"margin_right",
-		null,
-		player_life_bar.margin_left + target_lengths.player as int,
-		0.6,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_OUT
-	)
-	tween.interpolate_property(
-		total_life_bar,
-		"margin_right",
-		null,
-		total_life_bar.margin_left + target_lengths.total as int,
-		0.6,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_OUT
-	)
-	if not tween.is_active():
-		tween.start()
-	yield(tween, "tween_all_completed")
+func update_life_force(life_force, sequential=false):
+	var total_life = life_force.player + life_force.specter
+	var wait = total_life_bar.update_life_force(total_life)
+	if sequential && wait is GDScriptFunctionState: yield(wait,"completed")
+	wait = player_life_bar.update_life_force(life_force.player)
+	if wait is GDScriptFunctionState: yield(wait,"completed")
 
 func reset_life_force(life_force):
 	max_total_life = life_force.player + life_force.specter
-	var target_lengths = compute_target_lengths(life_force)
-	player_life_bar.margin_right = player_life_bar.margin_left + target_lengths.player as int
-	total_life_bar.margin_right = total_life_bar.margin_left + target_lengths.total as int
-
+	total_life_bar.reset_life_force(max_total_life, max_total_life)
+	player_life_bar.reset_life_force(max_total_life, life_force.player)
 
 func get_player_actions(state):
 	var actions = player_menu.request_actions(state)

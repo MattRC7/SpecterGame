@@ -26,7 +26,7 @@ func _execute_turn():
 	wait = player.take_damage()
 	if wait is GDScriptFunctionState: yield(wait, "completed")
 	var health = player.get_health()
-	wait = gui_manager.update_life_force(health)
+	wait = gui_manager.update_life_force(health, true)
 	if wait is GDScriptFunctionState: yield(wait, "completed")
 	if health.specter == 0 && specter_initial_state == "ACTIVE":
 		wait = player.specter_retreat()

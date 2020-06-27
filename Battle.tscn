@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/Player.png" type="Texture" id=1]
 [ext_resource path="res://assets/Spook.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://GUIManager.gd" type="Script" id=7]
 [ext_resource path="res://Specter.gd" type="Script" id=8]
 [ext_resource path="res://assets/Seraph.png" type="Texture" id=9]
+[ext_resource path="res://LifeBar.gd" type="Script" id=10]
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -167,17 +168,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="GUILayer/GUIManager"]
-
 [node name="TotalLifeBar" type="ColorRect" parent="GUILayer/GUIManager"]
 margin_left = 409.0
 margin_top = 349.0
 margin_right = 409.0
 margin_bottom = 373.0
 color = Color( 0.854902, 0, 0, 1 )
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Tween" type="Tween" parent="GUILayer/GUIManager/TotalLifeBar"]
 
 [node name="PlayerLifeBar" type="ColorRect" parent="GUILayer/GUIManager"]
 margin_left = 409.0
@@ -185,9 +187,12 @@ margin_top = 349.0
 margin_right = 409.0
 margin_bottom = 373.0
 color = Color( 0, 0.854902, 0.27451, 1 )
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Tween" type="Tween" parent="GUILayer/GUIManager/PlayerLifeBar"]
 
 [node name="PlayerMenu" type="ItemList" parent="GUILayer/GUIManager"]
 visible = false
@@ -199,3 +204,5 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Tween" type="Tween" parent="GUILayer/GUIManager/PlayerMenu"]
