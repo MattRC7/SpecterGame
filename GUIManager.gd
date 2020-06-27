@@ -49,8 +49,8 @@ func reset_life_force(life_force):
 	total_life_bar.margin_right = total_life_bar.margin_left + target_lengths.total as int
 
 
-func get_player_actions():
-	var actions = player_menu.request_actions()
+func get_player_actions(state):
+	var actions = player_menu.request_actions(state)
 	if actions is GDScriptFunctionState:
 		actions = yield(actions, "completed")
 	return actions

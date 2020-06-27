@@ -1,18 +1,18 @@
 extends ItemList
 
-const player_actions = [
-	"REST",
-	"FORTIFY"
-]
-
-func display_actions(actions):
+func display_actions(menu, state):
 	self.clear()
-	for action in actions:
-		self.add_item(action)
+	match menu:
+		"PLAYER":
+			self.add_item("REST")
+			if state.specter == "ACTIVE":
+				self.add_item("FORTIFY")
+			else:
+				self.add_item("AWAKEN")
 
-func request_actions():
+func request_actions(state):
 	self.visible = true
-	display_actions(player_actions)
+	display_actions("PLAYER", state)
 	var player_action_index = yield(self, "item_activated")
 	self.visible = false
-	return { "player": player_actions[player_action_index] }	
+	return { "player": self.get_item_text(player_action_index) }	

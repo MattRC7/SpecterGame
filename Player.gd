@@ -34,3 +34,14 @@ func take_damage():
 func attack():
 	animator.play("attack")
 	yield(animator, "animation_finished")
+
+func specter_retreat():
+	specter.retreat()
+	
+func awaken():
+	specter.awaken()
+	var delta = specter.change_health(life_force-1)
+	change_health(-delta)
+
+func get_specter_state():
+	return specter.state
