@@ -1,10 +1,7 @@
-extends Node
+extends Node2D
 
-signal attack
-signal idle
-	
+onready var animator = get_node("AnimationPlayer")
+
 func attack():
-	get_node("AnimationPlayer").play("attack")
-	yield(get_node("AnimationPlayer"), "animation_finished")
-	emit_signal("attack")
-	emit_signal("idle")
+	animator.play("attack")
+	yield(animator, "animation_finished")
