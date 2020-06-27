@@ -19,14 +19,19 @@ func _on_ItemList_select_action(action):
 
 	wait = player.take_damage()
 	if wait is GDScriptFunctionState: yield(wait, "completed")
-
 	wait = gui_manager.update_life_force(player.get_health())
 	if wait is GDScriptFunctionState: yield(wait, "completed")
 
-	wait = player.rest()
-	if wait is GDScriptFunctionState: yield(wait,"completed")
-
-	wait = gui_manager.update_life_force(player.get_health())
-	if wait is GDScriptFunctionState: yield(wait, "completed")
+	match action:
+		"REST":
+			wait = player.rest()
+			if wait is GDScriptFunctionState: yield(wait,"completed")
+			wait = gui_manager.update_life_force(player.get_health())
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+		"FORTIFY":
+			wait = player.fortify()
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = gui_manager.update_life_force(player.get_health())
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 
 	self.emit_signal("request_action")

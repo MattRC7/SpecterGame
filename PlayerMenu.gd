@@ -5,6 +5,7 @@ signal select_action
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.add_item("REST")
+	self.add_item("FORTIFY")
 
 func _on_Battle_request_action():
 	self.visible = true
