@@ -1,6 +1,6 @@
 extends Node2D
 
-signal request_action
+signal execute_turn
 
 onready var enemy = get_node("Enemy")
 var player
@@ -11,9 +11,14 @@ func _ready():
 	player = get_node("Player")
 	gui_manager = get_node("GUILayer/GUIManager")
 	gui_manager.reset_life_force(player.get_health())
-	self.emit_signal("request_action")
+	self.connect("execute_turn", self, "_execute_turn")
+	self.emit_signal("execute_turn")
 
-func _on_ItemList_select_action(action):
+func _execute_turn():
+	var actions = gui_manager.get_player_actions()
+	if actions is GDScriptFunctionState:
+		actions = yield(actions, "completed")
+
 	var wait = enemy.attack()
 	if wait is GDScriptFunctionState: yield(wait,"completed")
 
@@ -22,7 +27,7 @@ func _on_ItemList_select_action(action):
 	wait = gui_manager.update_life_force(player.get_health())
 	if wait is GDScriptFunctionState: yield(wait, "completed")
 
-	match action:
+	match actions.player:
 		"REST":
 			wait = player.rest()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
@@ -34,4 +39,4 @@ func _on_ItemList_select_action(action):
 			wait = gui_manager.update_life_force(player.get_health())
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 
-	self.emit_signal("request_action")
+	self.emit_signal("execute_turn")

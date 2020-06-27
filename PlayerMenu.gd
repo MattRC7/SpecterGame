@@ -1,16 +1,18 @@
 extends ItemList
 
-signal select_action
+const player_actions = [
+	"REST",
+	"FORTIFY"
+]
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.add_item("REST")
-	self.add_item("FORTIFY")
+func display_actions(actions):
+	self.clear()
+	for action in actions:
+		self.add_item(action)
 
-func _on_Battle_request_action():
+func request_actions():
 	self.visible = true
-	self.connect("item_activated", self, "_on_Self_select_action", [], CONNECT_ONESHOT)
-	
-func _on_Self_select_action(index):
-	self.emit_signal("select_action", self.get_item_text(index))
+	display_actions(player_actions)
+	var player_action_index = yield(self, "item_activated")
 	self.visible = false
+	return { "player": player_actions[player_action_index] }	

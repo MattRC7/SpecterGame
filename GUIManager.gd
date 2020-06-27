@@ -4,6 +4,7 @@ const LIFE_BAR_MAX_LENGTH = 400.0
 
 onready var player_life_bar = get_node("PlayerLifeBar")
 onready var total_life_bar = get_node("TotalLifeBar")
+onready var player_menu = get_node("PlayerMenu")
 onready var tween = get_node("Tween")
 
 var max_total_life = 1
@@ -46,3 +47,10 @@ func reset_life_force(life_force):
 	var target_lengths = compute_target_lengths(life_force)
 	player_life_bar.margin_right = player_life_bar.margin_left + target_lengths.player as int
 	total_life_bar.margin_right = total_life_bar.margin_left + target_lengths.total as int
+
+
+func get_player_actions():
+	var actions = player_menu.request_actions()
+	if actions is GDScriptFunctionState:
+		actions = yield(actions, "completed")
+	return actions
