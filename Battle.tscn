@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Player.png" type="Texture" id=1]
 [ext_resource path="res://assets/Spook.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Enemy.gd" type="Script" id=4]
 [ext_resource path="res://BattleConductor.gd" type="Script" id=5]
 [ext_resource path="res://PlayerMenu.gd" type="Script" id=6]
+[ext_resource path="res://GUIManager.gd" type="Script" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -54,7 +55,7 @@ tracks/0/keys = {
 "values": [ true, false, true, false, true ]
 }
 
-[node name="Battle" type="Node2D"]
+[node name="BattleConductor" type="Node2D"]
 script = ExtResource( 5 )
 
 [node name="Enemy" type="Node2D" parent="."]
@@ -80,9 +81,29 @@ texture = ExtResource( 1 )
 anims/rest = SubResource( 2 )
 anims/take_damage = SubResource( 3 )
 
-[node name="UI Layer" type="CanvasLayer" parent="."]
+[node name="GUILayer" type="CanvasLayer" parent="."]
 
-[node name="ItemList" type="ItemList" parent="UI Layer"]
+[node name="GUIManager" type="Control" parent="GUILayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="GUILayer/GUIManager"]
+
+[node name="PlayerLifeBar" type="ColorRect" parent="GUILayer/GUIManager"]
+margin_left = 409.0
+margin_top = 349.0
+margin_right = 441.0
+margin_bottom = 373.0
+color = Color( 0, 0.854902, 0.27451, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="GUILayer/GUIManager"]
 visible = false
 margin_left = 1.0
 margin_top = 442.0
@@ -92,5 +113,5 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="request_action" from="." to="UI Layer/ItemList" method="_on_Battle_request_action"]
-[connection signal="select_action" from="UI Layer/ItemList" to="." method="_on_ItemList_select_action"]
+[connection signal="request_action" from="." to="GUILayer/GUIManager/ItemList" method="_on_Battle_request_action"]
+[connection signal="select_action" from="GUILayer/GUIManager/ItemList" to="." method="_on_ItemList_select_action"]
