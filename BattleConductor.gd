@@ -2,7 +2,7 @@ extends Node2D
 
 signal execute_turn
 
-onready var enemy = get_node("Enemy")
+var enemy
 var player
 var gui_manager
 
@@ -10,7 +10,13 @@ var gui_manager
 func _ready():
 	player = get_node("Player")
 	gui_manager = get_node("GUILayer/GUIManager")
-	gui_manager.reset_life_force(player.get_health())
+	enemy = get_node("Enemy")
+	var player_health = player.get_health()
+	gui_manager.reset_life_force({
+		"player": player_health.player,
+		"specter": player_health.specter,
+		"enemy": enemy.get_health()
+	})
 	self.connect("execute_turn", self, "_execute_turn")
 	self.emit_signal("execute_turn")
 

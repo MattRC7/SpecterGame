@@ -4,6 +4,7 @@ const LIFE_BAR_MAX_LENGTH = 400.0
 
 onready var player_life_bar = get_node("PlayerLifeBar")
 onready var total_life_bar = get_node("TotalLifeBar")
+onready var enemy_life_bar = get_node("EnemyLifeBar")
 onready var player_menu = get_node("PlayerMenu")
 onready var tween = get_node("Tween")
 
@@ -29,6 +30,7 @@ func reset_life_force(life_force):
 	max_total_life = life_force.player + life_force.specter
 	total_life_bar.reset_life_force(max_total_life, max_total_life)
 	player_life_bar.reset_life_force(max_total_life, life_force.player)
+	enemy_life_bar.reset_life_force(life_force.enemy, life_force.enemy)
 
 func get_player_actions(state):
 	var actions = player_menu.request_actions(state)
