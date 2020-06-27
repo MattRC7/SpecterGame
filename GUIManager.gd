@@ -25,6 +25,8 @@ func update_life_force(life_force, sequential=false):
 	if sequential && wait is GDScriptFunctionState: yield(wait,"completed")
 	wait = player_life_bar.update_life_force(life_force.player)
 	if wait is GDScriptFunctionState: yield(wait,"completed")
+	wait = enemy_life_bar.update_life_force(life_force.enemy)
+	if wait is GDScriptFunctionState: yield(wait, "completed")
 
 func reset_life_force(life_force):
 	max_total_life = life_force.player + life_force.specter
