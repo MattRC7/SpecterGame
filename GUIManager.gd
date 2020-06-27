@@ -6,7 +6,6 @@ onready var player_life_bar = get_node("PlayerLifeBar")
 onready var total_life_bar = get_node("TotalLifeBar")
 onready var enemy_life_bar = get_node("EnemyLifeBar")
 onready var player_menu = get_node("PlayerMenu")
-onready var tween = get_node("Tween")
 
 var max_total_life = 1
 

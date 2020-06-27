@@ -75,7 +75,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.45098, 0.45098, 1, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=5]
 resource_name = "take_damage"
 length = 0.8
 tracks/0/type = "value"
@@ -146,7 +146,7 @@ texture = ExtResource( 1 )
 anims/attack = SubResource( 2 )
 anims/fortify = SubResource( 3 )
 anims/rest = SubResource( 4 )
-anims/take_damage = SubResource( 7 )
+anims/take_damage = SubResource( 5 )
 
 [node name="Specter" type="Node2D" parent="Player"]
 script = ExtResource( 8 )
