@@ -1,5 +1,8 @@
 extends Node2D
 
+onready var sprite = get_node("Sprite")
+onready var animator = get_node("AnimationPlayer")
+
 const MAX_LIFE_FORCE = 40
 var life_force = 40
 var state = "ACTIVE"
@@ -10,7 +13,15 @@ func change_health(delta):
 	return life_force - old_life_force
 
 func retreat():
+	sprite.visible = true
+	animator.play("retreat")
+	yield(animator, "animation_finished")
+	sprite.visible = false
 	self.state = "SLEEP"
-
+	
 func awaken():
+	sprite.visible = true
+	animator.play_backwards("retreat")
+	yield(animator, "animation_finished")
+	sprite.visible = false
 	self.state = "ACTIVE"

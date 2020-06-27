@@ -36,12 +36,12 @@ func attack():
 	yield(animator, "animation_finished")
 
 func specter_retreat():
-	specter.retreat()
+	return specter.retreat()
 	
 func awaken():
-	specter.awaken()
 	var delta = specter.change_health(life_force-1)
 	change_health(-delta)
+	return specter.awaken()
 
 func get_specter_state():
 	return specter.state
