@@ -1,23 +1,24 @@
+class_name Enemy
 extends Node2D
 
-const MAX_LIFE_FORCE = 70
-var life_force = 70
+var life_force: LifeForce = LifeForce.new(70, 70)
 
-onready var animator = get_node("AnimationPlayer")
+onready var animator: AnimationPlayer = get_node("AnimationPlayer")
 
-func attack():
+func get_state() -> Dictionary:
+	return {
+		"life_force": life_force.current
+	}
+	
+func receive_damage(damage: int) -> Dictionary:
+	assert(damage > 0)
+	life_force.change(-damage)
+	return get_state()
+
+func anim_attack() -> void:
 	animator.play("attack")
 	yield(animator, "animation_finished")
 
-func change_health(delta):
-	var old_life_force = life_force
-	life_force = max(0, min(MAX_LIFE_FORCE, life_force + delta))
-	return life_force - old_life_force
-
-func take_damage():
+func anim_take_damage() -> void:
 	animator.play("take_damage")
 	yield(animator,"animation_finished")
-	change_health(-10)
-
-func get_health():
-	return life_force

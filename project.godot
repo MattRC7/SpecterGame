@@ -8,9 +8,44 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Enemy.gd"
+}, {
+"base": "ColorRect",
+"class": "LifeBar",
+"language": "GDScript",
+"path": "res://LifeBar.gd"
+}, {
+"base": "Object",
+"class": "LifeForce",
+"language": "GDScript",
+"path": "res://LifeForce.gd"
+}, {
+"base": "Node2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Player.gd"
+}, {
+"base": "ItemList",
+"class": "PlayerMenu",
+"language": "GDScript",
+"path": "res://PlayerMenu.gd"
+}, {
+"base": "Node2D",
+"class": "Specter",
+"language": "GDScript",
+"path": "res://Specter.gd"
+} ]
 _global_script_class_icons={
-
+"Enemy": "",
+"LifeBar": "",
+"LifeForce": "",
+"Player": "",
+"PlayerMenu": "",
+"Specter": ""
 }
 
 [application]

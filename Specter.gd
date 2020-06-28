@@ -1,27 +1,44 @@
+class_name Specter
 extends Node2D
 
-onready var sprite = get_node("Sprite")
-onready var animator = get_node("AnimationPlayer")
+onready var sprite: Sprite = get_node("Sprite")
+onready var animator: AnimationPlayer = get_node("AnimationPlayer")
 
-const MAX_LIFE_FORCE = 40
-var life_force = 40
-var state = "ACTIVE"
+var life_force: LifeForce = LifeForce.new(40, 40)
 
-func change_health(delta):
-	var old_life_force = life_force
-	life_force = max(0, min(MAX_LIFE_FORCE, life_force + delta))
-	return life_force - old_life_force
+var awake := true
 
-func retreat():
+func get_state() -> Dictionary:
+	return {
+		"life_force": life_force.current,
+		"awake": awake
+	}
+	
+func receive_damage(damage: int) -> void:
+	assert(damage > 0)
+	if (awake):
+		life_force.change(-damage)
+		if (life_force.current) == 0:
+			awake = false
+
+func receive_healing(healing: int) -> void:
+	assert(healing > 0)
+	if (awake):
+		life_force.change(healing)
+	
+func receive_awaken(life_force) -> void:
+	if (!awake && life_force > 0):
+		awake = true
+		receive_healing(life_force)
+
+func anim_retreat() -> void:
 	sprite.visible = true
 	animator.play("retreat")
 	yield(animator, "animation_finished")
 	sprite.visible = false
-	self.state = "SLEEP"
 	
-func awaken():
+func anim_awaken() -> void:
 	sprite.visible = true
 	animator.play_backwards("retreat")
 	yield(animator, "animation_finished")
 	sprite.visible = false
-	self.state = "ACTIVE"
