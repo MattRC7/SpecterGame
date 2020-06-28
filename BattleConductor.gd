@@ -47,13 +47,14 @@ func _execute_turn():
 	if wait is GDScriptFunctionState: 
 		yield(wait,"completed")
 
+	narrator.hide()
 	emit_signal("execute_turn")
 
 func _perform_specter_action(action: String):
 	var wait
 	match action:
 		"ATTACK":
-			wait = narrator.say("Your specter zaps the enemy!")
+			wait = narrator.say("Your specter zaps the hostile specter!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
@@ -66,11 +67,17 @@ func _perform_specter_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				wait = enemy_lifebar.update_bar(enemy.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = narrator.say("The hostile specter suffers damage.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+
 
 func _perform_enemy_action(action: String):
+	var wait
 	match action:
 		"ATTACK":
-			var wait = enemy.anim_attack()
+			wait = narrator.say("The hostile specter strikes you!")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = enemy.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
 
 			var player_initial_state = player.get_state()
@@ -91,17 +98,25 @@ func _perform_enemy_action(action: String):
 			if (specter_damage_delta):
 				wait = specter_lifebar.update_bar(player.specter.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = narrator.say("Your specter suffers damage.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
 				if specter_initial_state.awake && !player.specter.awake:
+					wait = narrator.say("Your specter retreats.")
+					if wait is GDScriptFunctionState: yield(wait, "completed")
 					wait = player.specter.anim_retreat()
-					if wait is GDScriptFunctionState: yield(wait, "completed")				
+					if wait is GDScriptFunctionState: yield(wait, "completed")
 			if (player_damage_delta):
 				wait = player_lifebar.update_bar(player.life_force.current)
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = narrator.say("You suffer damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 func _perform_player_action(action):
 	var wait
 	match action:
 		"REST":
+			wait = narrator.say("You rest for a moment.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.anim_rest()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
 
@@ -111,8 +126,13 @@ func _perform_player_action(action):
 			if (player_initial_state.life_force != player.life_force.current):
 				wait = player_lifebar.update_bar(player.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait,"completed")
+				wait = narrator.say("You replenish some of your life force.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+
 
 		"FORTIFY":
+			wait = narrator.say("You direct part of your life force to you specter.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.anim_fortify()
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			
@@ -128,8 +148,12 @@ func _perform_player_action(action):
 					]
 					if wait[0] is GDScriptFunctionState: yield(wait[0], "completed")
 					if wait[1] is GDScriptFunctionState && wait[1].is_valid(): yield(wait[1], "completed")
+					wait = narrator.say("Your specter's life force is replenished.")
+					if wait is GDScriptFunctionState: yield(wait, "completed")
 
 		"AWAKEN":
+			wait = narrator.say("You focus the life force within you...")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.anim_fortify()
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 
@@ -147,3 +171,6 @@ func _perform_player_action(action):
 
 					wait = specter_lifebar.update_bar(player.specter.life_force.current)
 					if wait is GDScriptFunctionState: yield(wait, "completed")
+					wait = narrator.say("Your specter awakens!")
+					if wait is GDScriptFunctionState: yield(wait, "completed")
+
