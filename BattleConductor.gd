@@ -1,10 +1,12 @@
 extends Node2D
 
 signal execute_turn
+
 onready var menu: PlayerMenu = get_node("GUILayer/PanelContainer/MarginContainer/PlayerMenu")
+onready var narrator: Narrator = get_node("GUILayer/PanelContainer/MarginContainer/Narrator")
+
 var enemy: Enemy
 var player: Player
-
 var player_lifebar: LifeBar
 var enemy_lifebar: LifeBar
 var specter_lifebar: LifeBar
@@ -48,9 +50,12 @@ func _execute_turn():
 	emit_signal("execute_turn")
 
 func _perform_specter_action(action: String):
+	var wait
 	match action:
 		"ATTACK":
-			var wait = player.anim_attack()
+			wait = narrator.say("Your specter zaps the enemy!")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = player.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
 			
 			var enemy_initial_state = enemy.get_state()

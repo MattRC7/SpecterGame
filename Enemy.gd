@@ -10,10 +10,9 @@ func get_state() -> Dictionary:
 		"life_force": life_force.current
 	}
 	
-func receive_damage(damage: int) -> Dictionary:
+func receive_damage(damage: int) -> void:
 	assert(damage > 0)
 	life_force.change(-damage)
-	return get_state()
 
 func anim_attack() -> void:
 	animator.play("attack")

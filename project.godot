@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://LifeForce.gd"
 }, {
+"base": "Label",
+"class": "Narrator",
+"language": "GDScript",
+"path": "res://Narrator.gd"
+}, {
 "base": "Node2D",
 "class": "Player",
 "language": "GDScript",
@@ -43,6 +48,7 @@ _global_script_class_icons={
 "Enemy": "",
 "LifeBar": "",
 "LifeForce": "",
+"Narrator": "",
 "Player": "",
 "PlayerMenu": "",
 "Specter": ""
