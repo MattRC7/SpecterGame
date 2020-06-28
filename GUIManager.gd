@@ -9,15 +9,6 @@ onready var player_menu = get_node("PlayerMenu")
 
 var max_total_life = 1
 
-func compute_target_lengths(life_force):
-	var player_life_force = life_force.player
-	var specter_life_force = life_force.specter
-	var player_ratio = player_life_force as float/max_total_life as float
-	var total_ratio = (player_life_force + specter_life_force) as float/max_total_life as float
-	var target_player_length = LIFE_BAR_MAX_LENGTH * player_ratio
-	var target_total_length = LIFE_BAR_MAX_LENGTH * total_ratio
-	return {"player": target_player_length, "total": target_total_length}	
-
 func update_life_force(life_force, sequential=false):
 	var total_life = life_force.player + life_force.specter
 	var wait = total_life_bar.update_life_force(total_life)
