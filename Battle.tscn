@@ -237,13 +237,17 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="GUILayer/PanelContainer/MarginContainer/PlayerMenu"]
 
 [node name="Narrator" type="Label" parent="GUILayer/PanelContainer/MarginContainer"]
-visible = false
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 1002.0
 margin_bottom = 134.0
 size_flags_vertical = 1
+text = "Testing 1 2 3"
 autowrap = true
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="GUILayer/PanelContainer/MarginContainer/Narrator"]
+
+[node name="Timer" type="Timer" parent="GUILayer/PanelContainer/MarginContainer/Narrator"]
+one_shot = true
+[connection signal="timeout" from="GUILayer/PanelContainer/MarginContainer/Narrator/Timer" to="GUILayer/PanelContainer/MarginContainer/Narrator" method="_on_Timer_timeout"]
