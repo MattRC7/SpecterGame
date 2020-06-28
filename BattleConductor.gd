@@ -1,7 +1,7 @@
 extends Node2D
 
 signal execute_turn
-onready var menu: PlayerMenu = get_node("GUILayer/PlayerMenu")
+onready var menu: PlayerMenu = get_node("GUILayer/PanelContainer/MarginContainer/PlayerMenu")
 var enemy: Enemy
 var player: Player
 
