@@ -234,8 +234,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="GUILayer/PanelContainer/MarginContainer/PlayerMenu"]
-
 [node name="Narrator" type="Label" parent="GUILayer/PanelContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
