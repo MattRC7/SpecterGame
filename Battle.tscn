@@ -242,7 +242,6 @@ margin_top = 8.0
 margin_right = 1002.0
 margin_bottom = 134.0
 size_flags_vertical = 1
-text = "Testing 1 2 3"
 autowrap = true
 script = ExtResource( 7 )
 

@@ -22,3 +22,6 @@ func change(delta: int) -> int:
 	var old_life_force = current
 	var new_life_force = _set_current(current + delta)
 	return new_life_force - old_life_force
+
+func is_maxed() -> bool:
+	return current == maximum

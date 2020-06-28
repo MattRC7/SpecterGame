@@ -88,7 +88,7 @@ func _perform_enemy_action(action: String):
 				player.specter.receive_damage(damage_remaining)
 				damage_remaining = damage_remaining - (specter_initial_state.life_force - player.specter.life_force.current)
 			if (damage_remaining > 0):
-				player.receive_damage(damage_remaining)
+				player.receive_damage(damage_remaining*2)
 			
 			var specter_damage_delta = player.specter.life_force.current != specter_initial_state.life_force
 			var player_damage_delta = player.life_force.current != player_initial_state.life_force
@@ -117,6 +117,11 @@ func _perform_player_action(action):
 		"REST":
 			wait = narrator.say("You rest for a moment.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			if player.life_force.is_maxed():
+				wait = narrator.say("Your life force is already at full capacity.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
+			
 			wait = player.anim_rest()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
 
@@ -133,29 +138,41 @@ func _perform_player_action(action):
 		"FORTIFY":
 			wait = narrator.say("You direct part of your life force to you specter.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			if player.specter.life_force.is_maxed():
+				wait = narrator.say("Your specter's life force is already at full capacity.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
+			if (!player.specter.awake):
+				wait = narrator.say("Your specter is not awake.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
+
 			wait = player.anim_fortify()
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			
 			var player_initial_state = player.get_state()
-			if (player.specter.awake):
-				player.specter.receive_healing(player.life_force.current - 1)
-				var delta = player.specter.life_force.current - player_initial_state.specter.life_force
-				if (delta > 0):
-					player.receive_damage(delta)
-					wait = [
-						player_lifebar.update_bar(player.life_force.current),
-						specter_lifebar.update_bar(player.specter.life_force.current)
-					]
-					if wait[0] is GDScriptFunctionState: yield(wait[0], "completed")
-					if wait[1] is GDScriptFunctionState && wait[1].is_valid(): yield(wait[1], "completed")
-					wait = narrator.say("Your specter's life force is replenished.")
-					if wait is GDScriptFunctionState: yield(wait, "completed")
+			player.specter.receive_healing(player.life_force.current - 1)
+			var delta = player.specter.life_force.current - player_initial_state.specter.life_force
+			if (delta > 0):
+				player.receive_damage(delta)
+				wait = [
+					player_lifebar.update_bar(player.life_force.current),
+					specter_lifebar.update_bar(player.specter.life_force.current)
+				]
+				if wait[0] is GDScriptFunctionState: yield(wait[0], "completed")
+				if wait[1] is GDScriptFunctionState && wait[1].is_valid(): yield(wait[1], "completed")
+				wait = narrator.say("Your specter's life force is replenished.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 		"AWAKEN":
-			wait = narrator.say("You focus the life force within you...")
+			wait = narrator.say("You direct part of your life force inward.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.anim_fortify()
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			if (player.life_force.current == 1):
+				wait = narrator.say("You do not have enough life force to awaken your specter.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				
 
 			var player_initial_state = player.get_state()
 			if (!player_initial_state.specter.awake):
