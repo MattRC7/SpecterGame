@@ -1,7 +1,7 @@
 class_name Player
 extends Node2D
 
-var life_force: LifeForce = LifeForce.new(120, 80)
+var life_force: LifeForce
 
 onready var animator: AnimationPlayer = get_node("AnimationPlayer")
 onready var specter: Specter = get_node("Specter")
@@ -11,6 +11,9 @@ func get_state() -> Dictionary:
 		"life_force": life_force.current,
 		"specter": specter.get_state()
 	}
+	
+func reset(max_life_force: int, life_force: int):
+	self.life_force = LifeForce.new(max_life_force, min(max_life_force, life_force))
 
 func receive_damage(damage: int):
 	assert(damage > 0)

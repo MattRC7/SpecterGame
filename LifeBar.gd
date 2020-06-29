@@ -10,7 +10,11 @@ var max_life := 1
 var max_length := 1.0
 
 func _compute_target_length(life_force: int) -> float:
-	var ratio = life_force as float/max_life as float
+	var ratio
+	if max_life > 0:
+		ratio = life_force as float/max_life as float
+	else:
+		ratio = 0
 	return max_length * ratio
 
 func update_bar(life_force: int) -> void:

@@ -91,7 +91,7 @@ tracks/0/keys = {
 "values": [ true, false, true, false, true ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 resource_name = "attack"
 length = 0.6
 tracks/0/type = "value"
@@ -131,7 +131,7 @@ tracks/2/keys = {
 "values": [ Vector2( 4, 4 ), Vector2( 8, 8 ), Vector2( 8, 8 ), Vector2( 4, 4 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 resource_name = "fortify"
 length = 0.8
 tracks/0/type = "value"
@@ -171,8 +171,7 @@ tracks/2/keys = {
 "values": [ Vector2( 8, 8 ), Vector2( 4, 4 ) ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "retreat"
+[sub_resource type="Animation" id=8]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:scale")
@@ -238,45 +237,22 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Specter"]
-anims/attack = SubResource( 7 )
-anims/fortify = SubResource( 8 )
-anims/retreat = SubResource( 6 )
+anims/attack = SubResource( 6 )
+anims/fortify = SubResource( 7 )
+anims/retreat = SubResource( 8 )
 
 [node name="GUILayer" type="CanvasLayer" parent="."]
 
-[node name="SpecterLifeBar" type="ColorRect" parent="GUILayer"]
-anchor_left = 0.364
-anchor_top = 0.473
-anchor_right = 0.364
-anchor_bottom = 0.473
-margin_top = 24.0
-margin_bottom = 48.0
-color = Color( 0, 0.615686, 0.854902, 1 )
-script = ExtResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Tween" type="Tween" parent="GUILayer/SpecterLifeBar"]
-
-[node name="BackBar" type="ColorRect" parent="GUILayer/SpecterLifeBar"]
-show_behind_parent = true
-margin_bottom = 24.0
-color = Color( 1, 0.0235294, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="PlayerLifeBar" type="ColorRect" parent="GUILayer"]
-anchor_left = 0.364
-anchor_top = 0.473
-anchor_right = 0.364
-anchor_bottom = 0.473
+anchor_left = 0.281432
+anchor_top = 0.461917
+anchor_right = 0.281432
+anchor_bottom = 0.461917
 margin_bottom = 24.0
 color = Color( 0, 0.854902, 0.27451, 1 )
 script = ExtResource( 10 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="Tween" type="Tween" parent="GUILayer/PlayerLifeBar"]
@@ -289,16 +265,35 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SpecterLifeBar" type="ColorRect" parent="GUILayer/PlayerLifeBar"]
+margin_top = 24.0
+margin_bottom = 48.0
+color = Color( 0, 0.615686, 0.854902, 1 )
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="GUILayer/PlayerLifeBar/SpecterLifeBar"]
+
+[node name="BackBar" type="ColorRect" parent="GUILayer/PlayerLifeBar/SpecterLifeBar"]
+show_behind_parent = true
+margin_bottom = 24.0
+color = Color( 1, 0.0235294, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="EnemyLifeBar" type="ColorRect" parent="GUILayer"]
-anchor_left = 0.25
-anchor_top = 0.133
-anchor_right = 0.25
-anchor_bottom = 0.133
+anchor_left = 0.329785
+anchor_top = 0.0791666
+anchor_right = 0.329785
+anchor_bottom = 0.0791666
 margin_bottom = 24.0
 color = Color( 0, 0.854902, 0.27451, 1 )
 script = ExtResource( 10 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="Tween" type="Tween" parent="GUILayer/EnemyLifeBar"]

@@ -4,7 +4,7 @@ extends Node2D
 onready var sprite: Sprite = get_node("Sprite")
 onready var animator: AnimationPlayer = get_node("AnimationPlayer")
 
-var life_force: LifeForce = LifeForce.new(40, 40)
+var life_force: LifeForce
 
 var awake := true
 
@@ -13,6 +13,10 @@ func get_state() -> Dictionary:
 		"life_force": life_force.current,
 		"awake": awake
 	}
+	
+func reset(max_life = 0, life = 0, awake = false):
+	self.awake = awake
+	self.life_force = LifeForce.new(max_life, min(max_life, life))
 	
 func receive_damage(damage: int) -> void:
 	assert(damage > 0)
@@ -25,11 +29,6 @@ func receive_healing(healing: int) -> void:
 	assert(healing > 0)
 	if (awake):
 		life_force.change(healing)
-	
-func receive_awaken(life_force) -> void:
-	if (!awake && life_force > 0):
-		awake = true
-		receive_healing(life_force)
 
 func anim_retreat() -> void:
 	sprite.visible = true

@@ -9,7 +9,10 @@ func get_state() -> Dictionary:
 	return {
 		"life_force": life_force.current
 	}
-	
+
+func reset(max_life_force: int, life_force: int) -> void:
+	self.life_force = LifeForce.new(max_life_force, min(max_life_force, life_force))
+
 func receive_damage(damage: int) -> void:
 	assert(damage > 0)
 	life_force.change(-damage)
