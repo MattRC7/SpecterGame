@@ -8,6 +8,9 @@ var life_force: LifeForce
 
 var awake := true
 
+func _ready():
+	sprite.visible = false
+
 func get_state() -> Dictionary:
 	return {
 		"life_force": life_force.current,
@@ -31,25 +34,17 @@ func receive_healing(healing: int) -> void:
 		life_force.change(healing)
 
 func anim_retreat() -> void:
-	sprite.visible = true
 	animator.play("retreat")
 	yield(animator, "animation_finished")
-	sprite.visible = false
 	
 func anim_awaken() -> void:
-	sprite.visible = true
-	animator.play_backwards("retreat")
+	animator.play("awaken")
 	yield(animator, "animation_finished")
-	sprite.visible = false
 	
 func anim_attack() -> void:
-	sprite.visible = true
 	animator.play("attack")
 	yield(animator, "animation_finished")
-	sprite.visible = false
 
 func anim_fortify() -> void:
-	sprite.visible = true
 	animator.play("fortify")
 	yield(animator, "animation_finished")
-	sprite.visible = false
