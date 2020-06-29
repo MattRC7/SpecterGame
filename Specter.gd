@@ -42,3 +42,15 @@ func anim_awaken() -> void:
 	animator.play_backwards("retreat")
 	yield(animator, "animation_finished")
 	sprite.visible = false
+	
+func anim_attack() -> void:
+	sprite.visible = true
+	animator.play("attack")
+	yield(animator, "animation_finished")
+	sprite.visible = false
+
+func anim_fortify() -> void:
+	sprite.visible = true
+	animator.play("fortify")
+	yield(animator, "animation_finished")
+	sprite.visible = false

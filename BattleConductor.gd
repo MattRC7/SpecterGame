@@ -20,7 +20,10 @@ func _ready():
 
 	player_lifebar.reset_bar(player.life_force)
 	enemy_lifebar.reset_bar(enemy.life_force)
-	specter_lifebar.reset_bar(player.specter.life_force)
+	specter_lifebar.reset_bar(
+		player.specter.life_force,
+		player.specter.life_force.maximum as float/player.life_force.maximum as float
+	)
 
 	var err = self.connect("execute_turn", self, "_execute_turn")
 	if err:
@@ -56,7 +59,7 @@ func _perform_specter_action(action: String):
 		"ATTACK":
 			wait = narrator.say("Your specter zaps the hostile specter!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
-			wait = player.anim_attack()
+			wait = player.specter.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
 			
 			var enemy_initial_state = enemy.get_state()
@@ -101,9 +104,9 @@ func _perform_enemy_action(action: String):
 				wait = narrator.say("Your specter suffers damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				if specter_initial_state.awake && !player.specter.awake:
-					wait = narrator.say("Your specter retreats.")
-					if wait is GDScriptFunctionState: yield(wait, "completed")
 					wait = player.specter.anim_retreat()
+					if wait is GDScriptFunctionState: yield(wait, "completed")
+					wait = narrator.say("Your specter retreats.")
 					if wait is GDScriptFunctionState: yield(wait, "completed")
 			if (player_damage_delta):
 				wait = player_lifebar.update_bar(player.life_force.current)
@@ -148,6 +151,8 @@ func _perform_player_action(action):
 				return
 
 			wait = player.anim_fortify()
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = player.specter.anim_fortify()
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			
 			var player_initial_state = player.get_state()
