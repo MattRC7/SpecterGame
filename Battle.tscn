@@ -245,10 +245,12 @@ anims/retreat = SubResource( 6 )
 [node name="GUILayer" type="CanvasLayer" parent="."]
 
 [node name="SpecterLifeBar" type="ColorRect" parent="GUILayer"]
-margin_left = 409.0
-margin_top = 325.0
-margin_right = 409.0
-margin_bottom = 349.0
+anchor_left = 0.364
+anchor_top = 0.473
+anchor_right = 0.364
+anchor_bottom = 0.473
+margin_top = 24.0
+margin_bottom = 48.0
 color = Color( 0, 0.615686, 0.854902, 1 )
 script = ExtResource( 10 )
 __meta__ = {
@@ -257,11 +259,20 @@ __meta__ = {
 
 [node name="Tween" type="Tween" parent="GUILayer/SpecterLifeBar"]
 
+[node name="BackBar" type="ColorRect" parent="GUILayer/SpecterLifeBar"]
+show_behind_parent = true
+margin_bottom = 24.0
+color = Color( 1, 0.0235294, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PlayerLifeBar" type="ColorRect" parent="GUILayer"]
-margin_left = 409.0
-margin_top = 349.0
-margin_right = 409.0
-margin_bottom = 373.0
+anchor_left = 0.364
+anchor_top = 0.473
+anchor_right = 0.364
+anchor_bottom = 0.473
+margin_bottom = 24.0
 color = Color( 0, 0.854902, 0.27451, 1 )
 script = ExtResource( 10 )
 __meta__ = {
@@ -270,11 +281,20 @@ __meta__ = {
 
 [node name="Tween" type="Tween" parent="GUILayer/PlayerLifeBar"]
 
+[node name="BackBar" type="ColorRect" parent="GUILayer/PlayerLifeBar"]
+show_behind_parent = true
+margin_bottom = 24.0
+color = Color( 1, 0.0235294, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="EnemyLifeBar" type="ColorRect" parent="GUILayer"]
-margin_left = 245.6
-margin_top = 58.1999
-margin_right = 245.6
-margin_bottom = 82.1999
+anchor_left = 0.25
+anchor_top = 0.133
+anchor_right = 0.25
+anchor_bottom = 0.133
+margin_bottom = 24.0
 color = Color( 0, 0.854902, 0.27451, 1 )
 script = ExtResource( 10 )
 __meta__ = {
@@ -282,6 +302,14 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="GUILayer/EnemyLifeBar"]
+
+[node name="BackBar" type="ColorRect" parent="GUILayer/EnemyLifeBar"]
+show_behind_parent = true
+margin_bottom = 24.0
+color = Color( 1, 0.0235294, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PanelContainer" type="PanelContainer" parent="GUILayer"]
 anchor_top = 0.74
