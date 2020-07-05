@@ -12,8 +12,8 @@ func get_state() -> Dictionary:
 		"specter": specter.get_state()
 	}
 	
-func reset(max_life_force: int, life_force: int):
-	self.life_force = LifeForce.new(max_life_force, min(max_life_force, life_force))
+func reset(max_life_force: int, life: int):
+	self.life_force = LifeForce.new(max_life_force, min(max_life_force, life))
 
 func receive_damage(damage: int):
 	assert(damage > 0)

@@ -2,6 +2,7 @@ extends Node2D
 
 signal start_battle
 signal execute_turn
+signal end_battle
 
 onready var dialog_box: DialogBox = get_node("GUILayer/DialogBox")
 
@@ -23,6 +24,9 @@ func _ready():
 	if err:
 		get_tree().quit(err)
 	err = self.connect("start_battle", self, "_start_battle")
+	if err:
+		get_tree().quit(err)
+	err = self.connect("end_battle", self, "_end_battle")
 	if err:
 		get_tree().quit(err)
 
@@ -56,16 +60,44 @@ func _execute_turn():
 	wait = _perform_specter_action(actions.specter)
 	if wait is GDScriptFunctionState: yield(wait,"completed")
 
+	if enemy.life_force.current == 0:
+		enemy.queue_free()
+		enemy_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		emit_signal("end_battle", true)
+		return
+
 	# Enemy  Action
 	wait = _perform_enemy_action("ATTACK")
 	if wait is GDScriptFunctionState: yield(wait,"completed")	
+
+	if player.life_force.current == 0:
+		player.queue_free()
+		player_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		emit_signal("end_battle", false)
+		return
 
 	# Player  Action
 	wait = _perform_player_action(actions.player)
 	if wait is GDScriptFunctionState: 
 		yield(wait,"completed")
 
+	if player.life_force.current == 0:
+		player.queue_free()
+		player_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		emit_signal("end_battle", false)
+		return
+
 	emit_signal("execute_turn")
+
+func _end_battle(won: bool):
+	var wait
+	if (won):
+		wait = dialog_box.say("The hostile specter fades away...")
+		if wait is GDScriptFunctionState: yield(wait, "completed")
+	else:
+		wait = dialog_box.say("Your vision grows dark...")
+		if wait is GDScriptFunctionState: yield(wait, "completed")
+	get_tree().change_scene("res://Prologue_Scene1.tscn")
 
 func _get_available_actions(menu: String, state: Dictionary) -> Array:
 	var actions = []
@@ -113,7 +145,6 @@ func _perform_specter_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				wait = dialog_box.say("The hostile specter suffers damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-
 
 func _perform_enemy_action(action: String):
 	var wait
@@ -181,8 +212,13 @@ func _perform_player_action(action):
 
 
 		"FORTIFY":
-			wait = dialog_box.say("You direct part of your life force to you specter.")
+			wait = dialog_box.say("You transfer part of your life force to your specter.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			if (player.life_force.current == 1):
+				wait = dialog_box.say("You do not have enough life force to fortify your specter.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
+
 			if player.specter.life_force.is_maxed():
 				wait = dialog_box.say("Your specter's life force is already at full capacity.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
@@ -212,11 +248,12 @@ func _perform_player_action(action):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 		"AWAKEN":
-			wait = dialog_box.say("You direct part of your life force inward.")
+			wait = dialog_box.say("You call forth a specter.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			if (player.life_force.current == 1):
 				wait = dialog_box.say("You do not have enough life force to awaken your specter.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
 
 			var player_initial_state = player.get_state()
 			if (!player_initial_state.specter.awake):

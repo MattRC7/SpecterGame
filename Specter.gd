@@ -17,8 +17,8 @@ func get_state() -> Dictionary:
 		"awake": awake
 	}
 	
-func reset(max_life = 0, life = 0, awake = false):
-	self.awake = awake
+func reset(max_life = 0, life = 0, wake = false):
+	self.awake = wake
 	self.life_force = LifeForce.new(max_life, min(max_life, life))
 	
 func receive_damage(damage: int) -> void:
