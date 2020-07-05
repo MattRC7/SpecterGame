@@ -10,7 +10,6 @@
 [ext_resource path="res://Specter.gd" type="Script" id=8]
 [ext_resource path="res://assets/Seraph.png" type="Texture" id=9]
 [ext_resource path="res://LifeBar.gd" type="Script" id=10]
-[ext_resource path="res://assets/take_damage_animation.tres" type="Animation" id=11]
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -26,6 +25,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( -20, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "take_damage"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite3:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -143,7 +158,7 @@ tracks/3/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=7]
 resource_name = "awaken"
 length = 0.8
 tracks/0/type = "value"
@@ -183,8 +198,7 @@ tracks/2/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "fortify"
+[sub_resource type="Animation" id=8]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:modulate")
@@ -235,7 +249,7 @@ tracks/3/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:scale")
@@ -287,7 +301,7 @@ texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]
 anims/attack = SubResource( 1 )
-anims/take_damage = ExtResource( 11 )
+anims/take_damage = SubResource( 10 )
 
 [node name="Player" type="Node2D" parent="."]
 position = Vector2( 152.95, 428.451 )
@@ -313,9 +327,9 @@ texture = ExtResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Specter"]
 anims/attack = SubResource( 6 )
-anims/awaken = SubResource( 9 )
-anims/fortify = SubResource( 7 )
-anims/retreat = SubResource( 8 )
+anims/awaken = SubResource( 7 )
+anims/fortify = SubResource( 8 )
+anims/retreat = SubResource( 9 )
 
 [node name="GUILayer" type="CanvasLayer" parent="."]
 
