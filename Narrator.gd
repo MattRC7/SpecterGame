@@ -6,14 +6,14 @@ signal text_accepted
 onready var tween: Tween = get_node("Tween")
 onready var timer: Timer = get_node("Timer")
 
-func say(text) -> void:
+func say(text, time = -1) -> void:
 	percent_visible = 0
 	visible = true
 	self.text = text
 	tween.interpolate_property(self, "percent_visible", 0, 1, 0.25)
 	if not tween.is_active():
 		tween.start()
-	timer.start()
+	timer.start(time)
 	yield(self, "text_accepted")
 
 func hide():

@@ -11,6 +11,6 @@ func get_player_choice(options: Array) -> String:
 		selection = yield(selection, "completed")
 	return selection
 	
-func say(text: String) -> void:
-	var wait = narrator.say(text)
+func say(text: String, time = 1.0) -> void:
+	var wait = narrator.say(text, time)
 	if wait is GDScriptFunctionState: yield(wait, "completed")
