@@ -2,8 +2,7 @@ extends Node2D
 
 signal execute_turn
 
-onready var menu: PlayerMenu = get_node("GUILayer/PanelContainer/MarginContainer/PlayerMenu")
-onready var narrator: Narrator = get_node("GUILayer/PanelContainer/MarginContainer/Narrator")
+onready var dialog_box: DialogBox = get_node("GUILayer/DialogBox")
 
 var enemy: Enemy
 var player: Player
@@ -37,7 +36,7 @@ func _ready():
 func _execute_turn():
 	var wait
 	var player_initial_state := player.get_state()
-	var actions = menu.request_actions(player_initial_state)
+	var actions = _request_actions(player_initial_state)
 	if actions is GDScriptFunctionState:
 		actions = yield(actions, "completed")
 
@@ -54,14 +53,40 @@ func _execute_turn():
 	if wait is GDScriptFunctionState: 
 		yield(wait,"completed")
 
-	narrator.hide()
 	emit_signal("execute_turn")
+
+func _get_available_actions(menu: String, state: Dictionary) -> Array:
+	var actions = []
+	match menu:
+		"PLAYER":
+			actions.append("REST")
+			if state.specter.awake:
+				actions.append("FORTIFY")
+			else:
+				actions.append("AWAKEN")
+		"SPECTER":
+			actions.append("ATTACK")
+	return actions
+
+func _request_actions(state: Dictionary):
+	var specter_action = ""
+	if (state.specter.awake):
+		specter_action = dialog_box.get_player_choice(_get_available_actions("SPECTER", state))
+		if specter_action is GDScriptFunctionState:
+			specter_action = yield(specter_action, "completed")
+	var player_action = dialog_box.get_player_choice(_get_available_actions("PLAYER", state))
+	if player_action is GDScriptFunctionState:
+		player_action = yield(player_action, "completed")
+	return {
+		"player": player_action,
+		"specter": specter_action
+	}
 
 func _perform_specter_action(action: String):
 	var wait
 	match action:
 		"ATTACK":
-			wait = narrator.say("Your specter zaps the hostile specter!")
+			wait = dialog_box.say("Your specter zaps the hostile specter!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player.specter.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
@@ -74,7 +99,7 @@ func _perform_specter_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				wait = enemy_lifebar.update_bar(enemy.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-				wait = narrator.say("The hostile specter suffers damage.")
+				wait = dialog_box.say("The hostile specter suffers damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 
@@ -82,7 +107,7 @@ func _perform_enemy_action(action: String):
 	var wait
 	match action:
 		"ATTACK":
-			wait = narrator.say("The hostile specter strikes you!")
+			wait = dialog_box.say("The hostile specter strikes you!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = enemy.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
@@ -105,28 +130,28 @@ func _perform_enemy_action(action: String):
 			if (specter_damage_delta):
 				wait = specter_lifebar.update_bar(player.specter.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-				wait = narrator.say("Your specter suffers damage.")
+				wait = dialog_box.say("Your specter suffers damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				if specter_initial_state.awake && !player.specter.awake:
 					wait = player.specter.anim_retreat()
 					if wait is GDScriptFunctionState: yield(wait, "completed")
 					specter_lifebar.reset_bar(LifeForce.new(0,0), 0.0)
-					wait = narrator.say("Your specter retreats.")
+					wait = dialog_box.say("Your specter retreats.")
 					if wait is GDScriptFunctionState: yield(wait, "completed")
 			if (player_damage_delta):
 				wait = player_lifebar.update_bar(player.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-				wait = narrator.say("You suffer damage.")
+				wait = dialog_box.say("You suffer damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 func _perform_player_action(action):
 	var wait
 	match action:
 		"REST":
-			wait = narrator.say("You rest for a moment.")
+			wait = dialog_box.say("You rest for a moment.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			if player.life_force.is_maxed():
-				wait = narrator.say("Your life force is already at full capacity.")
+				wait = dialog_box.say("Your life force is already at full capacity.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				return
 			
@@ -139,19 +164,19 @@ func _perform_player_action(action):
 			if (player_initial_state.life_force != player.life_force.current):
 				wait = player_lifebar.update_bar(player.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait,"completed")
-				wait = narrator.say("You replenish some of your life force.")
+				wait = dialog_box.say("You replenish some of your life force.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 
 		"FORTIFY":
-			wait = narrator.say("You direct part of your life force to you specter.")
+			wait = dialog_box.say("You direct part of your life force to you specter.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			if player.specter.life_force.is_maxed():
-				wait = narrator.say("Your specter's life force is already at full capacity.")
+				wait = dialog_box.say("Your specter's life force is already at full capacity.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				return
 			if (!player.specter.awake):
-				wait = narrator.say("Your specter is not awake.")
+				wait = dialog_box.say("Your specter is not awake.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				return
 
@@ -171,14 +196,14 @@ func _perform_player_action(action):
 				]
 				if wait[0] is GDScriptFunctionState: yield(wait[0], "completed")
 				if wait[1] is GDScriptFunctionState && wait[1].is_valid(): yield(wait[1], "completed")
-				wait = narrator.say("Your specter's life force is replenished.")
+				wait = dialog_box.say("Your specter's life force is replenished.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 		"AWAKEN":
-			wait = narrator.say("You direct part of your life force inward.")
+			wait = dialog_box.say("You direct part of your life force inward.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			if (player.life_force.current == 1):
-				wait = narrator.say("You do not have enough life force to awaken your specter.")
+				wait = dialog_box.say("You do not have enough life force to awaken your specter.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 			var player_initial_state = player.get_state()
@@ -200,6 +225,6 @@ func _perform_player_action(action):
 					if wait is GDScriptFunctionState: yield(wait, "completed")
 					wait = specter_lifebar.update_bar(player.specter.life_force.current)
 					if wait is GDScriptFunctionState: yield(wait, "completed")
-					wait = narrator.say("Your specter awakens!")
+					wait = dialog_box.say("Your specter awakens!")
 					if wait is GDScriptFunctionState: yield(wait, "completed")
 

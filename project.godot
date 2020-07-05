@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "PanelContainer",
+"class": "DialogBox",
+"language": "GDScript",
+"path": "res://DialogBox.gd"
+}, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -35,9 +40,9 @@ _global_script_classes=[ {
 "path": "res://Player.gd"
 }, {
 "base": "ItemList",
-"class": "PlayerMenu",
+"class": "SelectMenu",
 "language": "GDScript",
-"path": "res://PlayerMenu.gd"
+"path": "res://SelectMenu.gd"
 }, {
 "base": "Node2D",
 "class": "Specter",
@@ -45,12 +50,13 @@ _global_script_classes=[ {
 "path": "res://Specter.gd"
 } ]
 _global_script_class_icons={
+"DialogBox": "",
 "Enemy": "",
 "LifeBar": "",
 "LifeForce": "",
 "Narrator": "",
 "Player": "",
-"PlayerMenu": "",
+"SelectMenu": "",
 "Specter": ""
 }
 
@@ -59,6 +65,15 @@ _global_script_class_icons={
 config/name="Specter"
 run/main_scene="res://Battle.tscn"
 config/icon="res://icon.png"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [rendering]
 

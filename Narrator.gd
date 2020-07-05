@@ -6,9 +6,7 @@ signal text_accepted
 onready var tween: Tween = get_node("Tween")
 onready var timer: Timer = get_node("Timer")
 
-var waiting_for_player := false
-
-func say(text):
+func say(text) -> void:
 	percent_visible = 0
 	visible = true
 	self.text = text
