@@ -12,9 +12,10 @@ onready var dialog_box = get_node(\"GUILayer/DialogBox\")
 
 func _ready():
 	var wait
-	wait = dialog_box.say(\"Gah! What are you? What do you want?\", 2.0)
+	yield(get_tree().create_timer(1.0), \"timeout\")
+	wait = dialog_box.say(\"Gah! What are you? What do you want?\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	wait = dialog_box.say(\"Did you...did you hurt whatever it was I sensed just now?\", 2.0)
+	wait = dialog_box.say(\"Are you trying to...eat me!?\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	get_tree().change_scene(\"res://Battle.tscn\")
 "
@@ -69,3 +70,4 @@ frame = 3
 [node name="GUILayer" type="CanvasLayer" parent="."]
 
 [node name="DialogBox" parent="GUILayer" instance=ExtResource( 4 )]
+dialog_pace = 2.0

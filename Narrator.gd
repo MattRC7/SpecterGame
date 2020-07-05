@@ -10,7 +10,7 @@ func say(text, time = -1) -> void:
 	percent_visible = 0
 	visible = true
 	self.text = text
-	tween.interpolate_property(self, "percent_visible", 0, 1, 0.25)
+	tween.interpolate_property(self, "percent_visible", 0, 1, 0.3)
 	if not tween.is_active():
 		tween.start()
 	timer.start(time)

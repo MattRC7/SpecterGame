@@ -1,5 +1,6 @@
 extends Node2D
 
+signal start_battle
 signal execute_turn
 
 onready var dialog_box: DialogBox = get_node("GUILayer/DialogBox")
@@ -13,13 +14,24 @@ var specter_lifebar: LifeBar
 func _ready():
 	enemy = get_node("Enemy")
 	player = get_node("Player")
-	enemy.reset(70, 70)
-	player.reset(120, 120)
-	player.specter.reset()
 
 	player_lifebar = get_node("GUILayer/PlayerLifeBar")
 	enemy_lifebar = get_node("GUILayer/EnemyLifeBar")
 	specter_lifebar = get_node("GUILayer/PlayerLifeBar/SpecterLifeBar")
+
+	var err = self.connect("execute_turn", self, "_execute_turn")
+	if err:
+		get_tree().quit(err)
+	err = self.connect("start_battle", self, "_start_battle")
+	if err:
+		get_tree().quit(err)
+
+	self.emit_signal("start_battle")
+
+func _start_battle():
+	enemy.reset(70, 70)
+	player.reset(120, 120)
+	player.specter.reset()
 
 	player_lifebar.reset_bar(player.life_force)
 	enemy_lifebar.reset_bar(enemy.life_force)
@@ -27,10 +39,10 @@ func _ready():
 		player.specter.life_force,
 		player.specter.life_force.maximum as float/player.life_force.maximum as float
 	)
-
-	var err = self.connect("execute_turn", self, "_execute_turn")
-	if err:
-		get_tree().quit(err)
+	
+	var wait = dialog_box.say("A hostile specter haunts you!")
+	if wait is GDScriptFunctionState: yield(wait, "completed")
+	
 	self.emit_signal("execute_turn")
 
 func _execute_turn():
