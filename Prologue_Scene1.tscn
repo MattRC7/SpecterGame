@@ -9,13 +9,21 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-onready var dialog_box = get_node(\"GUILayer/DialogBox\")
+onready var dialog_box: DialogBox = get_node(\"GUILayer/DialogBox\")
+onready var player_avater: PlayerAvatar = get_node(\"PlayerAvatar\")
+var scene = 1
 
 func _ready():
+	player_avater.frozen = true
 	yield(get_tree().create_timer(1.0), \"timeout\")
-	_first_encounter_cutscene()
+	if (scene == 1):
+		_first_encounter_scene()
+		return
+	if (scene == 2):
+		_second_encounter_scene()
+		return
 	
-func _first_encounter_cutscene():
+func _first_encounter_scene():
 	var wait
 	dialog_box.visible = true;
 	wait = dialog_box.say(\"What a long day...the grind never ends. At least I have nothing to do tonight.\")
@@ -24,7 +32,9 @@ func _first_encounter_cutscene():
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false;
 	
-	yield(get_tree().create_timer(1.0),\"timeout\")
+	yield(get_tree().create_timer(0.5),\"timeout\")
+	player_avater.set_direction(PlayerAvatar.Direction.DOWN)
+	yield(get_tree().create_timer(0.5),\"timeout\")
 
 	dialog_box.visible = true;
 	wait = dialog_box.say(\"Oh no, what's happening to me?\")
@@ -32,7 +42,11 @@ func _first_encounter_cutscene():
 	dialog_box.visible = false;
 	
 	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
-	get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force)
+	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force), \"completed\")
+	_second_encounter_scene()
+
+func _second_encounter_scene():
+	player_avater.frozen = false
 "
 
 [sub_resource type="TileSet" id=2]
@@ -83,6 +97,8 @@ zoom = Vector2( 0.5, 0.5 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="Tween" type="Tween" parent="PlayerAvatar"]
 
 [node name="EnemyAvatar" type="Sprite" parent="."]
 visible = false

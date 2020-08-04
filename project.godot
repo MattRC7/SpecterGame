@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Player.gd"
 }, {
+"base": "Sprite",
+"class": "PlayerAvatar",
+"language": "GDScript",
+"path": "res://PlayerAvatar.gd"
+}, {
 "base": "ItemList",
 "class": "SelectMenu",
 "language": "GDScript",
@@ -61,6 +66,7 @@ _global_script_class_icons={
 "LifeForce": "",
 "Narrator": "",
 "Player": "",
+"PlayerAvatar": "",
 "SelectMenu": "",
 "Specter": "",
 "SpecterResource": ""
