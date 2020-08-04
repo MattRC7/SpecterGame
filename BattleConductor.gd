@@ -44,7 +44,7 @@ func start_battle(enemy_template: SpecterResource, enemy_lf: int, player_lf: int
 	)
 	
 	if (!get_node("/root/GameRoot").has_specter):
-		var wait = dialog_box.say("You encounter a mysterious specter. It seems to be fading away.", 3.0)
+		var wait = dialog_box.say("You encounter a mysterious specter.", 2.0)
 		if wait is GDScriptFunctionState: yield(wait, "completed")
 	else:
 		var wait = dialog_box.say("A hostile specter haunts you!")
@@ -102,8 +102,9 @@ func _end_battle(won: bool, bonded = false):
 		if bonded:
 			wait = dialog_box.say("You and the specter have become one.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
-		wait = dialog_box.say("The hostile specter fades away...")
-		if wait is GDScriptFunctionState: yield(wait, "completed")
+		else:
+			wait = dialog_box.say("The hostile specter fades away...")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 	else:
 		wait = dialog_box.say("Your vision grows dark...")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
@@ -161,6 +162,11 @@ func _perform_specter_action(action: String):
 
 func _perform_enemy_action(action: String):
 	var wait
+	if (!get_node("/root/GameRoot").has_specter):
+		wait = dialog_box.say("The specter appears to be fading away.")
+		if wait is GDScriptFunctionState: yield(wait, "completed")
+		return
+
 	match action:
 		"ATTACK":
 			wait = dialog_box.say("The hostile specter strikes you!")
