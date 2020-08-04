@@ -2,6 +2,7 @@ class_name Enemy
 extends Node2D
 
 var life_force: LifeForce = LifeForce.new(70, 70)
+var bonded := false
 
 onready var animator: AnimationPlayer = get_node("AnimationPlayer")
 onready var sprite: Sprite = get_node("Sprite3")

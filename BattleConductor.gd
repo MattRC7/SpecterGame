@@ -43,8 +43,12 @@ func start_battle(enemy_template: SpecterResource, enemy_lf: int, player_lf: int
 		player.specter.life_force.maximum as float/player.life_force.maximum as float
 	)
 	
-	var wait = dialog_box.say("A hostile specter haunts you!")
-	if wait is GDScriptFunctionState: yield(wait, "completed")
+	if (!get_node("/root/GameRoot").has_specter):
+		var wait = dialog_box.say("You encounter a mysterious specter. It seems to be fading away.", 3.0)
+		if wait is GDScriptFunctionState: yield(wait, "completed")
+	else:
+		var wait = dialog_box.say("A hostile specter haunts you!")
+		if wait is GDScriptFunctionState: yield(wait, "completed")
 	
 	self.emit_signal("execute_turn")
 
@@ -86,11 +90,18 @@ func _execute_turn():
 		emit_signal("end_battle", false)
 		return
 
+	if enemy.bonded == true:
+		emit_signal("end_battle", true, true)
+		return
+
 	emit_signal("execute_turn")
 
-func _end_battle(won: bool):
+func _end_battle(won: bool, bonded = false):
 	var wait
-	if (won):
+	if won:
+		if bonded:
+			wait = dialog_box.say("You and the specter have become one.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 		wait = dialog_box.say("The hostile specter fades away...")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
 	else:
@@ -103,6 +114,8 @@ func _get_available_actions(menu: String, state: Dictionary) -> Array:
 	var actions = []
 	match menu:
 		"PLAYER":
+			if (!get_node("/root/GameRoot").has_specter):
+				return ["BOND"]
 			actions.append("REST")
 			if state.specter.awake:
 				actions.append("FORTIFY")
@@ -190,7 +203,16 @@ func _perform_enemy_action(action: String):
 func _perform_player_action(action):
 	var wait
 	match action:
+		"BOND":
+			wait = dialog_box.say("Your open your soul to the specter.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			# TODO: Insert Animation
+			enemy.bonded = true
+			wait = dialog_box.say("Bonding successful!")
+			
 		"REST":
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+
 			wait = dialog_box.say("You rest for a moment.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			if player.life_force.is_maxed():
