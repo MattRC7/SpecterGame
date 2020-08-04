@@ -4,14 +4,16 @@ extends Node2D
 var life_force: LifeForce = LifeForce.new(70, 70)
 
 onready var animator: AnimationPlayer = get_node("AnimationPlayer")
+onready var sprite: Sprite = get_node("Sprite3")
 
 func get_state() -> Dictionary:
 	return {
 		"life_force": life_force.current
 	}
 
-func reset(max_life_force: int, life: int) -> void:
-	self.life_force = LifeForce.new(max_life_force, min(max_life_force, life))
+func reset(resource: SpecterResource, life: int) -> void:
+	sprite.texture = resource.sprite
+	self.life_force = LifeForce.new(resource.max_life_force, min(resource.max_life_force, life))
 
 func receive_damage(damage: int) -> void:
 	assert(damage > 0)

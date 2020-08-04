@@ -48,6 +48,11 @@ _global_script_classes=[ {
 "class": "Specter",
 "language": "GDScript",
 "path": "res://Specter.gd"
+}, {
+"base": "Resource",
+"class": "SpecterResource",
+"language": "GDScript",
+"path": "res://SpecterResource.gd"
 } ]
 _global_script_class_icons={
 "DialogBox": "",
@@ -57,7 +62,8 @@ _global_script_class_icons={
 "Narrator": "",
 "Player": "",
 "SelectMenu": "",
-"Specter": ""
+"Specter": "",
+"SpecterResource": ""
 }
 
 [application]
@@ -65,6 +71,10 @@ _global_script_class_icons={
 config/name="Specter"
 run/main_scene="res://Prologue_Scene1.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameRoot="*res://GameRoot.gd"
 
 [debug]
 

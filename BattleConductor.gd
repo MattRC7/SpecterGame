@@ -3,6 +3,7 @@ extends Node2D
 signal start_battle
 signal execute_turn
 signal end_battle
+signal exit_battle
 
 onready var dialog_box: DialogBox = get_node("GUILayer/DialogBox")
 
@@ -30,11 +31,9 @@ func _ready():
 	if err:
 		get_tree().quit(err)
 
-	self.emit_signal("start_battle")
-
-func _start_battle():
-	enemy.reset(70, 70)
-	player.reset(120, 120)
+func start_battle(enemy_template: SpecterResource, enemy_lf: int, player_lf: int) -> void:
+	enemy.reset(enemy_template, enemy_lf)
+	player.reset(120, player_lf)
 	player.specter.reset()
 
 	player_lifebar.reset_bar(player.life_force)
@@ -97,7 +96,8 @@ func _end_battle(won: bool):
 	else:
 		wait = dialog_box.say("Your vision grows dark...")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
-	get_tree().change_scene("res://Prologue_Scene1.tscn")
+		
+	emit_signal("exit_battle")
 
 func _get_available_actions(menu: String, state: Dictionary) -> Array:
 	var actions = []

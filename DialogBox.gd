@@ -14,6 +14,5 @@ func get_player_choice(options: Array) -> String:
 	return selection
 	
 func say(text: String, time = -1) -> void:
-	
 	var wait = narrator.say(text, time if time > 0 else dialog_pace)
 	if wait is GDScriptFunctionState: yield(wait, "completed")

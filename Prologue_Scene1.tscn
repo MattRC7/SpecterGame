@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/PlayerOverworldSpritesheet.png" type="Texture" id=1]
 [ext_resource path="res://assets/EnemyOverworldSpritesheet.png" type="Texture" id=2]
 [ext_resource path="res://assets/HospitalTileset.png" type="Texture" id=3]
 [ext_resource path="res://DialogBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://PlayerAvatar.gd" type="Script" id=5]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -12,14 +13,26 @@ onready var dialog_box = get_node(\"GUILayer/DialogBox\")
 
 func _ready():
 	yield(get_tree().create_timer(1.0), \"timeout\")
+	_first_encounter_cutscene()
 	
 func _first_encounter_cutscene():
 	var wait
-	wait = dialog_box.say(\"Gah! What are you? What do you want?\")
+	dialog_box.visible = true;
+	wait = dialog_box.say(\"What a long day...the grind never ends. At least I have nothing to do tonight.\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	wait = dialog_box.say(\"Are you trying to...eat me!?\")
+	wait = dialog_box.say(\"I feel terrible. Hope I didn't catch something...\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	get_tree().change_scene(\"res://Battle.tscn\")
+	dialog_box.visible = false;
+	
+	yield(get_tree().create_timer(1.0),\"timeout\")
+
+	dialog_box.visible = true;
+	wait = dialog_box.say(\"Oh no, what's happening to me?\")
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	dialog_box.visible = false;
+	
+	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
+	get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force)
 "
 
 [sub_resource type="TileSet" id=2]
@@ -62,6 +75,7 @@ texture = ExtResource( 1 )
 offset = Vector2( 0, -16 )
 hframes = 4
 frame = 1
+script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="PlayerAvatar"]
 current = true
