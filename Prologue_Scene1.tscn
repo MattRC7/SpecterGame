@@ -10,35 +10,31 @@
 script/source = "extends Node2D
 
 onready var dialog_box: DialogBox = get_node(\"GUILayer/DialogBox\")
-onready var player_avater: PlayerAvatar = get_node(\"PlayerAvatar\")
+onready var player_avatar: PlayerAvatar = get_node(\"PlayerAvatar\")
 onready var enemy_avatar: Sprite = get_node(\"EnemyAvatar\")
 var scene = 1
 
 func _ready():
-	player_avater.frozen = true
-	yield(get_tree().create_timer(1.0), \"timeout\")
-	if (scene == 1):
-		_first_encounter_scene()
-		return
-	if (scene == 2):
-		_second_encounter_scene()
-		return
+	player_avatar.frozen = true
+	_first_encounter_scene()
 	
 func _first_encounter_scene():
 	var wait
+	yield(get_tree().create_timer(1.0), \"timeout\")
+
 	dialog_box.visible = true;
-	wait = dialog_box.say(\"What a long day...the grind never ends. At least I have nothing to do tonight.\")
+	wait = dialog_box.say(\"What a long day...the grind never ends. At least I have nothing to do tonight.\", 5.0)
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	wait = dialog_box.say(\"I feel terrible. Hope I didn't catch something...\")
+	wait = dialog_box.say(\"I feel terrible though. Hope I didn't catch something...\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false;
 	
 	yield(get_tree().create_timer(0.5),\"timeout\")
-	player_avater.set_direction(PlayerAvatar.Direction.DOWN)
+	player_avatar.set_direction(PlayerAvatar.Direction.DOWN)
 	yield(get_tree().create_timer(0.5),\"timeout\")
 
 	dialog_box.visible = true
-	wait = dialog_box.say(\"Oh no, what's happening to me?\")
+	wait = dialog_box.say(\"What is this feeling...what's happening to me?\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false
 	
@@ -50,26 +46,41 @@ func _first_encounter_scene():
 func _second_encounter_scene():
 	var wait
 	yield(get_tree().create_timer(1.0), \"timeout\")
+	
 	dialog_box.visible = true
 	wait = dialog_box.say(\"What just happened? Where are all these memories from?\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	wait = dialog_box.say(\"I, I mean you, I mean uhh...we were being chased.\", 5.0)
+	wait = dialog_box.say(\"I was...erm, I mean you were...were we being chased?\", 5.0)
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	wait = dialog_box.say(\"Not chased...hunted!\")
+	wait = dialog_box.say(\"Not just chased...hunted!\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false
 	
 	enemy_avatar.get_node(\"AnimationPlayer\").play(\"Appear\")
 	yield(enemy_avatar.get_node(\"AnimationPlayer\"),\"animation_finished\")
-	player_avater.set_direction(PlayerAvatar.Direction.RIGHT)
+	player_avatar.set_direction(PlayerAvatar.Direction.RIGHT)
 
 	dialog_box.visible = true
-	wait = dialog_box.say(\"You! You were hunting us! Leave us alone!\")
+	wait = dialog_box.say(\"Ah! Were you the one hunting us? Leave us alone!\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false
 
 	var specter: SpecterResource = load(\"res://specters/specter_2.tres\")
 	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.max_life_force), \"completed\")
+	_final_scene()
+
+func _final_scene():
+	var wait
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	enemy_avatar.get_node(\"AnimationPlayer\").play_backwards(\"Appear\")
+	yield(enemy_avatar.get_node(\"AnimationPlayer\"),\"animation_finished\")
+
+	dialog_box.visible = true
+	wait = dialog_box.say(\"This isn't real. My mind must be melting from exhaustion. Time to go home.\", 4.0)
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	dialog_box.visible = false
+
+	player_avatar.frozen = false
 "
 
 [sub_resource type="TileSet" id=2]
