@@ -1,6 +1,5 @@
 extends Node2D
 
-signal start_battle
 signal execute_turn
 signal end_battle
 signal exit_battle
@@ -22,9 +21,6 @@ func _ready():
 	specter_lifebar = get_node("GUILayer/PlayerLifeBar/SpecterLifeBar")
 
 	var err = self.connect("execute_turn", self, "_execute_turn")
-	if err:
-		get_tree().quit(err)
-	err = self.connect("start_battle", self, "_start_battle")
 	if err:
 		get_tree().quit(err)
 	err = self.connect("end_battle", self, "_end_battle")

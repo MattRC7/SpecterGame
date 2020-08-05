@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/PlayerOverworldSpritesheet.png" type="Texture" id=1]
 [ext_resource path="res://assets/EnemyOverworldSpritesheet.png" type="Texture" id=2]
@@ -11,6 +11,7 @@ script/source = "extends Node2D
 
 onready var dialog_box: DialogBox = get_node(\"GUILayer/DialogBox\")
 onready var player_avater: PlayerAvatar = get_node(\"PlayerAvatar\")
+onready var enemy_avatar: Sprite = get_node(\"EnemyAvatar\")
 var scene = 1
 
 func _ready():
@@ -36,17 +37,39 @@ func _first_encounter_scene():
 	player_avater.set_direction(PlayerAvatar.Direction.DOWN)
 	yield(get_tree().create_timer(0.5),\"timeout\")
 
-	dialog_box.visible = true;
+	dialog_box.visible = true
 	wait = dialog_box.say(\"Oh no, what's happening to me?\")
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
-	dialog_box.visible = false;
+	dialog_box.visible = false
 	
 	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
 	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force), \"completed\")
+	get_node(\"/root/GameRoot\").has_specter = true
 	_second_encounter_scene()
 
 func _second_encounter_scene():
-	player_avater.frozen = false
+	var wait
+	yield(get_tree().create_timer(1.0), \"timeout\")
+	dialog_box.visible = true
+	wait = dialog_box.say(\"What just happened? Where are all these memories from?\")
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	wait = dialog_box.say(\"I, I mean you, I mean uhh...we were being chased.\", 5.0)
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	wait = dialog_box.say(\"Not chased...hunted!\")
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	dialog_box.visible = false
+	
+	enemy_avatar.get_node(\"AnimationPlayer\").play(\"Appear\")
+	yield(enemy_avatar.get_node(\"AnimationPlayer\"),\"animation_finished\")
+	player_avater.set_direction(PlayerAvatar.Direction.RIGHT)
+
+	dialog_box.visible = true
+	wait = dialog_box.say(\"You! You were hunting us! Leave us alone!\")
+	if wait is GDScriptFunctionState: yield(wait, \"completed\")
+	dialog_box.visible = false
+
+	var specter: SpecterResource = load(\"res://specters/specter_2.tres\")
+	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.max_life_force), \"completed\")
 "
 
 [sub_resource type="TileSet" id=2]
@@ -70,6 +93,21 @@ func _second_encounter_scene():
 1/navigation_offset = Vector2( 0, 0 )
 1/shapes = [  ]
 1/z_index = 0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Appear"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="Overworld" type="Node2D"]
 script = SubResource( 1 )
@@ -101,11 +139,14 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="PlayerAvatar"]
 
 [node name="EnemyAvatar" type="Sprite" parent="."]
-visible = false
-position = Vector2( 216, 64 )
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 168, 24 )
 texture = ExtResource( 2 )
 hframes = 4
 frame = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyAvatar"]
+anims/Appear = SubResource( 3 )
 
 [node name="GUILayer" type="CanvasLayer" parent="."]
 
