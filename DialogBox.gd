@@ -1,7 +1,7 @@
 class_name DialogBox
 extends PanelContainer
 
-export var dialog_pace := 1.5
+export var dialog_pace := 2.0
 
 onready var narrator: Narrator = get_node("DialogMargin/Narrator")
 onready var select_menu: SelectMenu = get_node("DialogMargin/SelectMenu")

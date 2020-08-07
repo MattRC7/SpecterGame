@@ -208,7 +208,9 @@ func _perform_player_action(action):
 		"BOND":
 			wait = dialog_box.say("Your open your soul to the specter.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
-			# TODO: Insert Animation
+			wait = enemy.anim_bond()
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			enemy_lifebar.reset_bar(LifeForce.new(0,0), 0.0)
 			enemy.bonded = true
 			wait = dialog_box.say("Bonding successful!")
 			

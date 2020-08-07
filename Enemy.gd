@@ -27,3 +27,7 @@ func anim_attack() -> void:
 func anim_take_damage() -> void:
 	animator.play("take_damage")
 	yield(animator,"animation_finished")
+	
+func anim_bond() -> void:
+	animator.play("bond")
+	yield(animator, "animation_finished")

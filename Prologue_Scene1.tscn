@@ -163,4 +163,3 @@ anims/Appear = SubResource( 3 )
 
 [node name="DialogBox" parent="GUILayer" instance=ExtResource( 4 )]
 visible = false
-dialog_pace = 2.0
