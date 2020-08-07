@@ -15,8 +15,8 @@ onready var enemy_avatar: Sprite = get_node(\"EnemyAvatar\")
 var scene = 1
 
 func _ready():
-	player_avatar.frozen = true
-	_first_encounter_scene()
+	player_avatar.frozen = false
+	# _first_encounter_scene()
 	
 func _first_encounter_scene():
 	var wait
@@ -146,8 +146,6 @@ zoom = Vector2( 0.5, 0.5 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="Tween" type="Tween" parent="PlayerAvatar"]
 
 [node name="EnemyAvatar" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )

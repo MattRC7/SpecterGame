@@ -10,27 +10,32 @@ enum Direction {
 	LEFT = 3
 }
 
-onready var tween = get_node("Tween")
-
 var direction: int = Direction.UP
+var target_space: Vector2
 var frozen := false
 
+func _ready():
+	target_space = self.position
+
+func _process(delta):
+	if (target_space != self.position):
+		self.position = self.position.move_toward(target_space, 64*delta)
+
 func _unhandled_key_input(event):
-	if (!frozen && !tween.is_active()):
-		if (event.is_action_pressed("ui_left", true)):
-			set_direction(Direction.LEFT)
-			tween.interpolate_property(self, "position", null, Vector2(self.position.x - 16, self.position.y), 1.0/speed, Tween.TRANS_LINEAR)
-		if (event.is_action_pressed("ui_right", true)):
-			set_direction(Direction.RIGHT)
-			tween.interpolate_property(self, "position", null, Vector2(self.position.x + 16, self.position.y), 1.0/speed, Tween.TRANS_LINEAR)
-		if (event.is_action_pressed("ui_up", true)):
-			set_direction(Direction.UP)
-			tween.interpolate_property(self, "position", null, Vector2(self.position.x, self.position.y - 16), 1.0/speed, Tween.TRANS_LINEAR)
-		if (event.is_action_pressed("ui_down", true)):
-			set_direction(Direction.DOWN)
-			tween.interpolate_property(self, "position", null, Vector2(self.position.x, self.position.y + 16), 1.0/speed, Tween.TRANS_LINEAR)
-		if (!tween.is_active()):
-			tween.start()
+	if !frozen:
+		if (target_space == self.position):
+			if (event.is_action("ui_left")):
+				set_direction(Direction.LEFT)
+				target_space = self.position + Vector2(-16, 0)
+			if (event.is_action("ui_right")):
+				set_direction(Direction.RIGHT)
+				target_space = self.position + Vector2(16, 0)
+			if (event.is_action("ui_up")):
+				set_direction(Direction.UP)
+				target_space = self.position + Vector2(0, -16)
+			if (event.is_action("ui_down")):
+				set_direction(Direction.DOWN)
+				target_space = self.position + Vector2(0, 16)
 
 func set_direction(new_direction: int):
 	direction = new_direction
