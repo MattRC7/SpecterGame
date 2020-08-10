@@ -115,7 +115,7 @@ func _get_available_actions(menu: String, state: Dictionary) -> Array:
 				return [{
 					"key": "BOND",
 					"text": "BOND",
-					"description": "Unite your soul with the target specter."
+					"description": "Bond the target specter to your soul."
 				}]
 			actions.append({
 				"key": "REST",
@@ -132,7 +132,7 @@ func _get_available_actions(menu: String, state: Dictionary) -> Array:
 				actions.append({
 					"key": "AWAKEN",
 					"text": "AWAKEN",
-					"description": "Call a specter to aid you."
+					"description": "Call your specter to action."
 				})
 		"SPECTER":
 			actions.append({
