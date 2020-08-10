@@ -4,7 +4,7 @@ extends Object
 var maximum := 1 setget _set_maximum
 var current := 1 setget _set_current, _get_current
 
-func _set_maximum(value: int) -> int:
+func _set_maximum(_value: int) -> int:
 	return maximum
 
 func _init(maximium: int, initial = 0):

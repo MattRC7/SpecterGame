@@ -112,14 +112,34 @@ func _get_available_actions(menu: String, state: Dictionary) -> Array:
 	match menu:
 		"PLAYER":
 			if (!get_node("/root/GameRoot").has_specter):
-				return ["BOND"]
-			actions.append("REST")
+				return [{
+					"key": "BOND",
+					"text": "BOND",
+					"description": "Unite your soul with the target specter."
+				}]
+			actions.append({
+				"key": "REST",
+				"text": "REST",
+				"description": "Regenerate your life force."
+			})
 			if state.specter.awake:
-				actions.append("FORTIFY")
+				actions.append({
+					"key": "FORTIFY",
+					"text": "FORTIFY",
+					"description": "Transfer life force to your specter."
+				})
 			else:
-				actions.append("AWAKEN")
+				actions.append({
+					"key": "AWAKEN",
+					"text": "AWAKEN",
+					"description": "Call a specter to aid you."
+				})
 		"SPECTER":
-			actions.append("ATTACK")
+			actions.append({
+				"key": "ATTACK",
+				"text": "ZAP",
+				"description": "Attack the target specter with a jolt of energy."
+			})
 	return actions
 
 func _request_actions(state: Dictionary):
