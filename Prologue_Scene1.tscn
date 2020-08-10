@@ -15,8 +15,8 @@ onready var enemy_avatar: Sprite = get_node(\"EnemyAvatar\")
 var scene = 1
 
 func _ready():
-	player_avatar.frozen = false
-	# _first_encounter_scene()
+	player_avatar.frozen = true
+	_first_encounter_scene()
 	
 func _first_encounter_scene():
 	var wait

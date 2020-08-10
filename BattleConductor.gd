@@ -125,10 +125,16 @@ func _get_available_actions(menu: String, state: Dictionary) -> Array:
 func _request_actions(state: Dictionary):
 	var specter_action = ""
 	if (state.specter.awake):
-		specter_action = dialog_box.get_player_choice(_get_available_actions("SPECTER", state))
+		specter_action = dialog_box.get_player_choice(
+			"What will your specter do?",
+			_get_available_actions("SPECTER", state)
+		)
 		if specter_action is GDScriptFunctionState:
 			specter_action = yield(specter_action, "completed")
-	var player_action = dialog_box.get_player_choice(_get_available_actions("PLAYER", state))
+	var player_action = dialog_box.get_player_choice(
+		"What will you do?",
+		_get_available_actions("PLAYER", state)
+	)
 	if player_action is GDScriptFunctionState:
 		player_action = yield(player_action, "completed")
 	return {

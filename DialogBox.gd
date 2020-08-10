@@ -3,11 +3,11 @@ extends PanelContainer
 
 export var dialog_pace := 2.0
 
-onready var narrator: Narrator = get_node("DialogMargin/Narrator")
-onready var select_menu: SelectMenu = get_node("DialogMargin/SelectMenu")
+onready var narrator: Narrator = get_node("DialogMargin/VBoxContainer/Narrator")
+onready var select_menu: SelectMenu = get_node("DialogMargin/VBoxContainer/SelectMenu")
 
-func get_player_choice(options: Array) -> String:
-	narrator.hide()
+func get_player_choice(prompt: String, options: Array) -> String:
+	narrator.display(prompt)
 	var selection = select_menu.get_player_choice(options);
 	if selection is GDScriptFunctionState:
 		selection = yield(selection, "completed")
