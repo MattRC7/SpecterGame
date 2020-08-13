@@ -1,7 +1,8 @@
 extends Node
 
 var battle_scene: PackedScene = preload("res://Battle.tscn")
-var has_specter: bool = false
+var has_specter := false
+var player_life_force := 120
 
 func initiate_battle(enemy: SpecterResource, enemy_lf: int) -> void:
 	var battle = battle_scene.instance()

@@ -15,7 +15,7 @@ func _get_current() -> int:
 	return current
 	
 func _set_current(new_life_force: int) -> int:
-	current = max(0, min(maximum, new_life_force))
+	current = max(0, min(maximum, new_life_force)) as int
 	return current
 	
 func change(delta: int) -> int:

@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource( 1 )
 max_life_force = 40
-idle_life_force = 5
+idle_life_force = 1
 sprite = ExtResource( 2 )
