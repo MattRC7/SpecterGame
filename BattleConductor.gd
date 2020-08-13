@@ -1,8 +1,15 @@
+class_name BattleConductor
 extends Node2D
 
 signal execute_turn
 signal end_battle
 signal exit_battle
+
+enum BattleResult {
+	GAME_OVER,
+	KILL,
+	BOND
+}
 
 onready var dialog_box: DialogBox = get_node("GUILayer/DialogBox")
 
@@ -39,7 +46,7 @@ func start_battle(enemy_template: SpecterResource, enemy_lf: int, player_lf: int
 		player.specter.life_force.maximum as float/player.life_force.maximum as float
 	)
 	
-	if (!get_node("/root/GameRoot").has_specter):
+	if (!get_node("/root/GameRoot").bonded_specters.size()):
 		var wait = dialog_box.say("You encounter a mysterious specter.", 2.0)
 		if wait is GDScriptFunctionState: yield(wait, "completed")
 	else:
@@ -98,20 +105,28 @@ func _end_battle(won: bool, bonded = false):
 		if bonded:
 			wait = dialog_box.say("You and the specter have become one.")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			emit_signal("exit_battle", {
+				"outcome": BattleResult.BOND,
+			})
 		else:
 			wait = dialog_box.say("The hostile specter fades away...")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
+			emit_signal("exit_battle", {
+				"outcome": BattleResult.KILL,
+			})
 	else:
 		wait = dialog_box.say("Your vision grows dark...")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
+		emit_signal("exit_battle", {
+			"outcome": BattleResult.GAME_OVER,
+		})
 		
-	emit_signal("exit_battle")
 
 func _get_available_actions(menu: String, state: Dictionary) -> Array:
 	var actions = []
 	match menu:
 		"PLAYER":
-			if (!get_node("/root/GameRoot").has_specter):
+			if (!get_node("/root/GameRoot").bonded_specters.size()):
 				return [{
 					"key": "BOND",
 					"text": "BOND",
@@ -184,7 +199,7 @@ func _perform_specter_action(action: String):
 
 func _perform_enemy_action(action: String):
 	var wait
-	if (!get_node("/root/GameRoot").has_specter):
+	if (!get_node("/root/GameRoot").bonded_specters.size()):
 		wait = dialog_box.say("The specter appears to be fading away.")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
 		return

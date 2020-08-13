@@ -40,7 +40,6 @@ func _first_encounter_scene():
 	
 	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
 	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force), \"completed\")
-	get_node(\"/root/GameRoot\").has_specter = true
 	_second_encounter_scene()
 
 func _second_encounter_scene():
