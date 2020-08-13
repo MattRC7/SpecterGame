@@ -1,13 +1,14 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://LabelledLifeBar.gd" type="Script" id=2]
+[ext_resource path="res://LabelledLifeMeter.gd" type="Script" id=2]
+
 
 [node name="LabelledLifeBar" type="HBoxContainer"]
 anchor_right = 1.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 256, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_constants/separation = 8
 script = ExtResource( 2 )
 __meta__ = {
@@ -36,12 +37,3 @@ size_flags_vertical = 0
 text = "120"
 align = 2
 valign = 1
-
-[node name="Bar" type="ColorRect" parent="."]
-margin_left = 100.0
-margin_right = 356.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 256, 24 )
-size_flags_horizontal = 0
-size_flags_vertical = 0
-color = Color( 0.45098, 1, 0.52549, 1 )

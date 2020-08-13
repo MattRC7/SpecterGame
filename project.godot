@@ -25,9 +25,9 @@ _global_script_classes=[ {
 "path": "res://Enemy.gd"
 }, {
 "base": "HBoxContainer",
-"class": "LabelledLifeBar",
+"class": "LabelledLifeMeter",
 "language": "GDScript",
-"path": "res://LabelledLifeBar.gd"
+"path": "res://LabelledLifeMeter.gd"
 }, {
 "base": "ColorRect",
 "class": "LifeBar",
@@ -73,7 +73,7 @@ _global_script_class_icons={
 "BattleConductor": "",
 "DialogBox": "",
 "Enemy": "",
-"LabelledLifeBar": "",
+"LabelledLifeMeter": "",
 "LifeBar": "",
 "LifeForce": "",
 "Narrator": "",
