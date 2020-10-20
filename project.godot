@@ -12,62 +12,62 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "BattleConductor",
 "language": "GDScript",
-"path": "res://BattleConductor.gd"
+"path": "res://scenes/BattleConductor.gd"
 }, {
 "base": "PanelContainer",
 "class": "DialogBox",
 "language": "GDScript",
-"path": "res://DialogBox.gd"
+"path": "res://scenes/UI/DialogBox.gd"
 }, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://Enemy.gd"
+"path": "res://scripts/Enemy.gd"
 }, {
 "base": "HBoxContainer",
 "class": "LabelledLifeMeter",
 "language": "GDScript",
-"path": "res://LabelledLifeMeter.gd"
+"path": "res://scenes/UI/LabelledLifeMeter.gd"
 }, {
 "base": "ColorRect",
 "class": "LifeBar",
 "language": "GDScript",
-"path": "res://LifeBar.gd"
+"path": "res://scripts/UI/LifeBar.gd"
 }, {
 "base": "Object",
 "class": "LifeForce",
 "language": "GDScript",
-"path": "res://LifeForce.gd"
+"path": "res://scripts/LifeForce.gd"
 }, {
 "base": "Label",
 "class": "Narrator",
 "language": "GDScript",
-"path": "res://Narrator.gd"
+"path": "res://scripts/UI/Narrator.gd"
 }, {
-"base": "Node2D",
+"base": "Reference",
 "class": "Player",
 "language": "GDScript",
-"path": "res://Player.gd"
+"path": "res://scripts/Player.gd"
 }, {
-"base": "Sprite",
+"base": "Reference",
 "class": "PlayerAvatar",
 "language": "GDScript",
-"path": "res://PlayerAvatar.gd"
+"path": "res://scripts/PlayerAvatar.gd"
 }, {
 "base": "BoxContainer",
 "class": "SelectMenu",
 "language": "GDScript",
-"path": "res://SelectMenu.gd"
+"path": "res://scripts/UI/SelectMenu.gd"
 }, {
-"base": "Node2D",
+"base": "Reference",
 "class": "Specter",
 "language": "GDScript",
-"path": "res://Specter.gd"
+"path": "res://scripts/Specter.gd"
 }, {
 "base": "Resource",
 "class": "SpecterResource",
 "language": "GDScript",
-"path": "res://SpecterResource.gd"
+"path": "res://specters/SpecterResource.gd"
 } ]
 _global_script_class_icons={
 "BattleConductor": "",
@@ -87,12 +87,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Specter"
-run/main_scene="res://Prologue_Scene1.tscn"
+run/main_scene="res://scenes/Prologue_Scene1.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-GameRoot="*res://GameRoot.gd"
+GameRoot="*res://scripts/GameRoot.gd"
 
 [debug]
 

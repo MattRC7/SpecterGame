@@ -2,14 +2,20 @@
 
 [ext_resource path="res://assets/Player.png" type="Texture" id=1]
 [ext_resource path="res://assets/SeraphEnemy.png" type="Texture" id=2]
-[ext_resource path="res://Player.gd" type="Script" id=3]
-[ext_resource path="res://Enemy.gd" type="Script" id=4]
-[ext_resource path="res://BattleConductor.gd" type="Script" id=5]
-[ext_resource path="res://DialogBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Enemy.gd" type="Script" id=4]
+[ext_resource path="res://scenes/BattleConductor.gd" type="Script" id=5]
+[ext_resource path="res://scenes/UI/DialogBox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/battle_music2.ogg" type="AudioStream" id=7]
-[ext_resource path="res://Specter.gd" type="Script" id=8]
+[ext_resource path="res://scripts/Specter.gd" type="Script" id=8]
 [ext_resource path="res://assets/Seraph.png" type="Texture" id=9]
-[ext_resource path="res://LifeBar.gd" type="Script" id=10]
+[ext_resource path="res://scripts/UI/LifeBar.gd" type="Script" id=10]
+
+
+
+
+
+
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"

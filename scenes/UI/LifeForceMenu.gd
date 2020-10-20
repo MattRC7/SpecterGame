@@ -23,7 +23,7 @@ func _refresh_menu():
 		)
 
 func _add_bar(label: String, life_force: int, max_lf = 0):
-	var labelled_life_meter: PackedScene = load("res://LabelledLifeMeter.tscn")
+	var labelled_life_meter: PackedScene = load("res://scenes/UI/LabelledLifeMeter.tscn")
 	var bar: LabelledLifeMeter = labelled_life_meter.instance()
 	container.add_child(bar)
 	bar.display(label, life_force, max_lf)

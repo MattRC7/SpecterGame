@@ -68,7 +68,7 @@ func _execute_turn():
 
 	if enemy.life_force.current == 0:
 		enemy.queue_free()
-		enemy_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		enemy_lifebar.reset_bar(LifeForce.new(0), 0.0)
 		emit_signal("end_battle", true)
 		return
 
@@ -78,7 +78,7 @@ func _execute_turn():
 
 	if player.life_force.current == 0:
 		player.queue_free()
-		player_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		player_lifebar.reset_bar(LifeForce.new(0), 0.0)
 		emit_signal("end_battle", false)
 		return
 
@@ -89,7 +89,7 @@ func _execute_turn():
 
 	if player.life_force.current == 0:
 		player.queue_free()
-		player_lifebar.reset_bar(LifeForce.new(0.0), 0.0)
+		player_lifebar.reset_bar(LifeForce.new(0), 0.0)
 		emit_signal("end_battle", false)
 		return
 

@@ -4,7 +4,7 @@ var bonded_specters: Array = []
 var player_total_life_force := 121
 
 func initiate_battle(enemy: SpecterResource, enemy_lf: int) -> void:
-	var battle_scene: PackedScene = load("res://Battle.tscn")
+	var battle_scene: PackedScene = load("res://scenes/Battle.tscn")
 	var battle = battle_scene.instance()
 	var current_scene = get_tree().current_scene
 	get_tree().root.remove_child(current_scene)
