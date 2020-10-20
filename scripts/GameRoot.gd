@@ -13,9 +13,7 @@ func initiate_battle(enemy: SpecterResource, enemy_lf: int) -> void:
 	battle.start_battle(enemy, enemy_lf, compute_player_life_force())
 	var battle_result: Dictionary = yield(battle, "exit_battle")
 	if (battle_result.outcome == BattleConductor.BattleResult.BOND):
-		bonded_specters.append({
-			"resource": enemy
-		})
+		add_bonded_specter(enemy)
 	if (battle_result.outcome == BattleConductor.BattleResult.GAME_OVER):
 		var new_scene: PackedScene = load(current_scene.filename)
 		current_scene = new_scene.instance()
@@ -23,6 +21,11 @@ func initiate_battle(enemy: SpecterResource, enemy_lf: int) -> void:
 	battle.queue_free()
 	get_tree().root.add_child(current_scene)
 	get_tree().current_scene = current_scene
+
+func add_bonded_specter(specter: SpecterResource) -> void:
+	bonded_specters.append({
+		"resource": specter
+	})
 
 func compute_player_life_force():
 	var life_force = player_total_life_force
