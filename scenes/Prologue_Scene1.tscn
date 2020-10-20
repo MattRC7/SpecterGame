@@ -39,7 +39,7 @@ func _first_encounter_scene():
 	dialog_box.visible = false
 	
 	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
-	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.idle_life_force), \"completed\")
+	yield(GameRoot.initiate_battle(specter, specter.idle_life_force), \"completed\")
 	_second_encounter_scene()
 
 func _second_encounter_scene():
@@ -65,7 +65,7 @@ func _second_encounter_scene():
 	dialog_box.visible = false
 
 	var specter: SpecterResource = load(\"res://specters/specter_2.tres\")
-	yield(get_node(\"/root/GameRoot\").initiate_battle(specter, specter.max_life_force), \"completed\")
+	yield(GameRoot.initiate_battle(specter, specter.max_life_force), \"completed\")
 	_final_scene()
 
 func _final_scene():

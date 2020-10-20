@@ -14,8 +14,6 @@ var direction: int = Direction.UP
 var target_space: Vector2
 var frozen := false
 
-onready var game_root: GameRoot = get_node("/root/GameRoot")
-
 func _ready():
 	target_space = self.position
 

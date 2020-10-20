@@ -14,10 +14,10 @@ func _ready():
 func _start_battle():
 	yield(get_tree().create_timer(0.0), \"timeout\")
 	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
-	get_node(\"/root/GameRoot\").add_bonded_specter(specter)
+	GameRoot.add_bonded_specter(specter)
 	var enemy: SpecterResource = load(\"res://specters/specter_\"+str(enemy_id)+\".tres\")
 	var enemy_life := enemy.max_life_force*(enemy_life_percent as float/100.0) as int
-	get_node(\"/root/GameRoot\").initiate_battle(enemy, enemy_life)
+	GameRoot.initiate_battle(enemy, enemy_life)
 "
 
 [node name="BattleSimulator" type="Node2D"]

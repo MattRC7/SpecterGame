@@ -49,7 +49,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Player.gd"
 }, {
-"base": "Reference",
+"base": "Sprite",
 "class": "PlayerAvatar",
 "language": "GDScript",
 "path": "res://scripts/PlayerAvatar.gd"
