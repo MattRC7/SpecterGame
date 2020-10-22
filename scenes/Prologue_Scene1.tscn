@@ -38,7 +38,8 @@ func _first_encounter_scene():
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false
 	
-	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
+	var specter: SpecterInstance = SpecterInstance.new(1)
+	specter.life_force.current = 1
 	yield(GameRoot.initiate_battle(specter), \"completed\")
 	_second_encounter_scene()
 
@@ -64,8 +65,8 @@ func _second_encounter_scene():
 	if wait is GDScriptFunctionState: yield(wait, \"completed\")
 	dialog_box.visible = false
 
-	var specter: SpecterResource = load(\"res://specters/specter_2.tres\")
-	yield(GameRoot.initiate_battle(specter, specter.max_life_force), \"completed\")
+	var specter: SpecterInstance = SpecterInstance.new(2)
+	yield(GameRoot.initiate_battle(specter), \"completed\")
 	_final_scene()
 
 func _final_scene():

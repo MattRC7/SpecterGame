@@ -9,7 +9,7 @@ func _set_maximum(_value: int) -> int:
 
 func _init(maximium: int, initial = 0):
 	maximum = maximium
-	current = initial
+	self._set_current(initial)
 	
 func _get_current() -> int:
 	return current

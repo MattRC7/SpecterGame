@@ -13,11 +13,8 @@ func _ready():
 
 func _start_battle():
 	yield(get_tree().create_timer(0.0), \"timeout\") # Change to deferred call
-	var specter: SpecterResource = load(\"res://specters/specter_1.tres\")
-	GameRoot.add_bonded_specter(SpecterInstance.new(specter, 0))
-	var enemy_resource: SpecterResource = load(\"res://specters/specter_\"+str(enemy_id)+\".tres\")
-	var enemy = SpecterInstance.new(enemy_resource, enemy_resource.max_life_force*(enemy_life_percent as float/100.0) as int)
-	GameRoot.initiate_battle(enemy)
+	GameRoot.add_bonded_specter(SpecterInstance.new(1))
+	GameRoot.initiate_battle(SpecterInstance.new(enemy_id, 100.0))
 "
 
 [node name="BattleSimulator" type="Node2D"]
