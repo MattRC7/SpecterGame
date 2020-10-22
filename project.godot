@@ -34,10 +34,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/UI/LifeBar.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "LifeForce",
 "language": "GDScript",
-"path": "res://scripts/LifeForce.gd"
+"path": "res://scripts/static/LifeForce.gd"
 }, {
 "base": "Label",
 "class": "Narrator",
@@ -59,10 +59,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/UI/SelectMenu.gd"
 }, {
-"base": "Reference",
+"base": "Node2D",
 "class": "Specter",
 "language": "GDScript",
 "path": "res://scripts/Specter.gd"
+}, {
+"base": "Reference",
+"class": "SpecterInstance",
+"language": "GDScript",
+"path": "res://scripts/static/SpecterInstance.gd"
 }, {
 "base": "Resource",
 "class": "SpecterResource",
@@ -81,6 +86,7 @@ _global_script_class_icons={
 "PlayerAvatar": "",
 "SelectMenu": "",
 "Specter": "",
+"SpecterInstance": "",
 "SpecterResource": ""
 }
 

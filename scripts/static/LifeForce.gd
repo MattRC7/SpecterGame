@@ -1,5 +1,5 @@
 class_name LifeForce
-extends Object
+extends Reference
 
 var maximum := 1 setget _set_maximum
 var current := 1 setget _set_current, _get_current
