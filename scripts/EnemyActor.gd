@@ -1,4 +1,4 @@
-class_name Enemy
+class_name EnemyActor
 extends Node2D
 
 onready var animator: AnimationPlayer = get_node("AnimationPlayer")

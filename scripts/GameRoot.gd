@@ -1,6 +1,6 @@
 extends Node
 
-var bonded_specters: Array = []
+var bonded_specters: Array = [] # Array of SpecterInstance
 var player_total_life_force := 121
 
 func initiate_battle(enemy: SpecterInstance) -> void:
@@ -11,7 +11,7 @@ func initiate_battle(enemy: SpecterInstance) -> void:
 	root.remove_child(current_scene)
 	root.add_child(battle)
 	get_tree().current_scene = battle
-	battle.start_battle(enemy, compute_player_life_force())
+	battle.start_battle(enemy)
 	var battle_result: Dictionary = yield(battle, "exit_battle")
 	if (battle_result.outcome == BattleConductor.BattleResult.BOND):
 		add_bonded_specter(enemy)
