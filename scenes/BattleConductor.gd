@@ -64,8 +64,8 @@ func start_battle(enemy_instance: SpecterInstance) -> void:
 
 func _execute_turn():
 	var wait
-	var enemy_action = enemy.get_npc_action()
-	var actions = _request_actions()
+	var enemy_action = _get_enemy_action()
+	var actions = _request_player_actions()
 	if actions is GDScriptFunctionState:
 		actions = yield(actions, "completed")
 
@@ -79,7 +79,7 @@ func _execute_turn():
 		emit_signal("end_battle", true)
 		return
 
-	# Enemy  Action
+	# Enemy Action
 	wait = _perform_enemy_action(enemy_action)
 	if wait is GDScriptFunctionState: yield(wait,"completed")	
 
@@ -89,8 +89,8 @@ func _execute_turn():
 		emit_signal("end_battle", false)
 		return
 
-	# Player  Action
-	wait = _perform_player_action(actions.player)
+	# Human Action
+	wait = _perform_player_action(actions.human)
 	if wait is GDScriptFunctionState: 
 		yield(wait,"completed")
 
@@ -128,7 +128,11 @@ func _end_battle(won: bool, bonded = false):
 			"outcome": BattleResult.GAME_OVER,
 		})
 
-func _request_actions():
+func _get_enemy_action():
+	var available_abilities = enemy.get_available_abilities();
+	return available_abilities[(randi() % len(available_abilities))]
+
+func _request_player_actions():
 	var specter_action = ""
 	if (player_specter != null):
 		specter_action = dialog_box.get_player_choice(
@@ -144,7 +148,7 @@ func _request_actions():
 	if player_action is GDScriptFunctionState:
 		player_action = yield(player_action, "completed")
 	return {
-		"player": player_action,
+		"human": player_action,
 		"specter": specter_action
 	}
 
@@ -210,7 +214,24 @@ func _perform_enemy_action(action: String):
 		return
 
 	match action:
-		"ATTACK":
+		"PERTURB":
+			wait = dialog_box.say("The hostile specter creates a psychic disturbance!")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = enemy_actor.anim_attack()
+			if wait is GDScriptFunctionState: yield(wait,"completed")
+
+			var player_damage_received: int;
+			player_damage_received = player_human.receive_damage(16)
+			
+			if (player_damage_received):
+				wait = player_human_actor.anim_take_damage()
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = player_human_lifebar.update_bar(player_human.life_force.current)
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = dialog_box.say("You suffer damage.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+			
+		"WOUND":
 			wait = dialog_box.say("The hostile specter strikes you!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = enemy_actor.anim_attack()

@@ -26,5 +26,8 @@ func receive_healing(healing: int) -> int:
 	life_force.change(healing)
 	return life_force.current - initial_life_force
 
-func get_npc_action() -> String:
-	return 'ATTACK'
+func get_available_abilities() -> Array:
+	return [
+		'WOUND',
+		'PERTURB'
+	]

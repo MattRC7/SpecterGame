@@ -4,7 +4,7 @@
 script/source = "extends Node2D
 
 export var enemy_id := 2
-export var enemy_life_percent := 100
+export var enemy_life_percent := 1.0
 
 func _ready():
 	assert(enemy_id > 0);
@@ -14,7 +14,7 @@ func _ready():
 func _start_battle():
 	yield(get_tree().create_timer(0.0), \"timeout\") # Change to deferred call
 	GameRoot.add_bonded_specter(SpecterInstance.new(1))
-	GameRoot.initiate_battle(SpecterInstance.new(enemy_id, 100.0))
+	GameRoot.initiate_battle(SpecterInstance.new(enemy_id, enemy_life_percent))
 "
 
 [node name="BattleSimulator" type="Node2D"]
