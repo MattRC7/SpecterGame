@@ -91,8 +91,8 @@ func _execute_turn():
 
 	# Human Action
 	wait = _perform_player_action(actions.human)
-	if wait is GDScriptFunctionState: 
-		yield(wait,"completed")
+	if wait is GDScriptFunctionState: yield(wait,"completed")
+	player_human.apply_cooldown()
 
 	if player_human.life_force.current == 0:
 		player_human_actor.queue_free()
@@ -283,10 +283,18 @@ func _perform_enemy_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				wait = dialog_box.say("You suffer damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
+				player_human.scared = true
 			
 
 func _perform_player_action(action):
 	var wait
+	
+	if player_human.scared:
+		wait = dialog_box.say("You are frozen in fear.")
+		if wait is GDScriptFunctionState: yield(wait, "completed")
+		player_human.scared = false
+		return
+	
 	match action:
 		"BOND":
 			wait = dialog_box.say("Your open your soul to the specter.")
