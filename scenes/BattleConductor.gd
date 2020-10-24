@@ -267,6 +267,24 @@ func _perform_enemy_action(action: String):
 				wait = dialog_box.say("You suffer damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
+		"SCARE":
+			wait = dialog_box.say("The hostile specter flashes in your mind!")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = enemy_actor.anim_attack()
+			if wait is GDScriptFunctionState: yield(wait,"completed")
+
+			var player_damage_received: int;
+			player_damage_received = player_human.receive_damage(6)
+			
+			if (player_damage_received):
+				wait = player_human_actor.anim_take_damage()
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = player_human_lifebar.update_bar(player_human.life_force.current)
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				wait = dialog_box.say("You suffer damage.")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+			
+
 func _perform_player_action(action):
 	var wait
 	match action:

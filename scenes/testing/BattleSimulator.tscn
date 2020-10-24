@@ -19,3 +19,4 @@ func _start_battle():
 
 [node name="BattleSimulator" type="Node2D"]
 script = SubResource( 1 )
+enemy_id = 3

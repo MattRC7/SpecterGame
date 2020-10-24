@@ -5,7 +5,6 @@ var resource: SpecterResource
 var life_force: LifeForce
 
 func _init(specter_id: int, life_force_percent = 1.0):
-	assert(specter_id > 0 && specter_id <= 2)
 	assert(life_force_percent > 0.0 && life_force_percent <= 1.0)
 	self.resource = load("res://specters/specter_"+str(specter_id)+".tres")
 	assert(self.resource)
@@ -27,7 +26,4 @@ func receive_healing(healing: int) -> int:
 	return life_force.current - initial_life_force
 
 func get_available_abilities() -> Array:
-	return [
-		'WOUND',
-		'PERTURB'
-	]
+	return self.resource.abilities
