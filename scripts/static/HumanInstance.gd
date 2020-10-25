@@ -21,17 +21,20 @@ func receive_healing(healing: int) -> int:
 	return life_force.current - initial_life_force
 
 func _set_scared(scared_val: bool) -> bool:
-	if (!scared_val):
+	if (scared && !scared_val):
 		scared = false
-		scared_cooldown = 2;
-	if (scared_val && scared_cooldown == 0):
-		scared = scared_val
+	if (!scared && scared_val && scared_cooldown == 0):
+		scared = true
 	return scared
 
 func _get_scared() -> bool:
 	return scared
 
-func debuff_cooldown() -> void:
-	scared = false
+func buff_cooldown() -> void:
 	if (scared_cooldown > 0):
-		scared_cooldown -= 1;
+		scared_cooldown -= 1
+
+func debuff_cooldown() -> void:
+	if (scared):
+		scared = false
+		scared_cooldown = 2
