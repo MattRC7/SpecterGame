@@ -80,6 +80,7 @@ func _execute_turn():
 		return
 
 	# Enemy Action
+	enemy.buff_cooldown()
 	wait = _perform_enemy_action(enemy_action)
 	if wait is GDScriptFunctionState: yield(wait,"completed")	
 
@@ -92,7 +93,7 @@ func _execute_turn():
 	# Human Action
 	wait = _perform_player_action(actions.human)
 	if wait is GDScriptFunctionState: yield(wait,"completed")
-	player_human.apply_cooldown()
+	player_human.debuff_cooldown()
 
 	if player_human.life_force.current == 0:
 		player_human_actor.queue_free()
@@ -195,7 +196,11 @@ func _perform_specter_action(action: String):
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = player_specter_actor.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
-			
+
+			if enemy.protected:
+				wait = dialog_box.say("The hostile specter is protected!")
+				if wait is GDScriptFunctionState: yield(wait, "completed")
+				return
 			var damage_received = enemy.receive_damage(10)
 
 			if damage_received > 0:
@@ -268,7 +273,7 @@ func _perform_enemy_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 
 		"SCARE":
-			wait = dialog_box.say("The hostile specter flashes in your mind!")
+			wait = dialog_box.say("The hostile specter fills your mind with fright!")
 			if wait is GDScriptFunctionState: yield(wait, "completed")
 			wait = enemy_actor.anim_attack()
 			if wait is GDScriptFunctionState: yield(wait,"completed")
@@ -281,18 +286,34 @@ func _perform_enemy_action(action: String):
 				if wait is GDScriptFunctionState: yield(wait, "completed")
 				wait = player_human_lifebar.update_bar(player_human.life_force.current)
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-				wait = dialog_box.say("You suffer damage.")
+				wait = dialog_box.say("You suffer psychic damage.")
 				if wait is GDScriptFunctionState: yield(wait, "completed")
-				player_human.scared = true
-			
+				if player_human.scared == false:
+					player_human.scared = true
+					if player_human.scared == true:
+						wait = dialog_box.say("You are frightened.")
+						if wait is GDScriptFunctionState: yield(wait, "completed")
+		
+		"PHASE_SHIFT":
+			wait = dialog_box.say("The hostile specter flickers!")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = enemy_actor.anim_effect()
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			enemy.receive_damage(3)
+			wait = enemy_lifebar.update_bar(enemy.life_force.current)
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			wait = dialog_box.say("The hostile specter expends life force.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
+			enemy.protected = true
+			wait = dialog_box.say("The hostile specter protects itself.")
+			if wait is GDScriptFunctionState: yield(wait, "completed")
 
 func _perform_player_action(action):
 	var wait
 	
 	if player_human.scared:
-		wait = dialog_box.say("You are frozen in fear.")
+		wait = dialog_box.say("You are too afraid to act.")
 		if wait is GDScriptFunctionState: yield(wait, "completed")
-		player_human.scared = false
 		return
 	
 	match action:

@@ -31,6 +31,7 @@ func _set_scared(scared_val: bool) -> bool:
 func _get_scared() -> bool:
 	return scared
 
-func apply_cooldown() -> void:
+func debuff_cooldown() -> void:
+	scared = false
 	if (scared_cooldown > 0):
 		scared_cooldown -= 1;

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
-max_life_force = 22
+max_life_force = 24
 idle_life_force = 1
 sprite = ExtResource( 2 )
-abilities = [ "SCARE" ]
+abilities = [ "SCARE", "PHASE_SHIFT" ]

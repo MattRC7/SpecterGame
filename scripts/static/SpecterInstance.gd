@@ -3,6 +3,7 @@ extends Reference
 
 var resource: SpecterResource
 var life_force: LifeForce
+var protected := false
 
 func _init(specter_id: int, life_force_percent = 1.0):
 	assert(life_force_percent > 0.0 && life_force_percent <= 1.0)
@@ -24,6 +25,9 @@ func receive_healing(healing: int) -> int:
 	var initial_life_force = life_force.current
 	life_force.change(healing)
 	return life_force.current - initial_life_force
+
+func buff_cooldown() -> void:
+	protected = false
 
 func get_available_abilities() -> Array:
 	return self.resource.abilities

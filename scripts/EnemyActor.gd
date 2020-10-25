@@ -11,6 +11,10 @@ func anim_attack() -> void:
 	animator.play("attack")
 	yield(animator, "animation_finished")
 
+func anim_effect() -> void:
+	animator.play("effect")
+	yield(animator, "animation_finished")
+
 func anim_take_damage() -> void:
 	animator.play("take_damage")
 	yield(animator,"animation_finished")

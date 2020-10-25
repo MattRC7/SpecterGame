@@ -9,6 +9,7 @@ export var enemy_life_percent := 1.0
 func _ready():
 	assert(enemy_id > 0);
 	assert(enemy_life_percent > 0 && enemy_life_percent <= 100)
+	randomize()
 	_start_battle()
 
 func _start_battle():
