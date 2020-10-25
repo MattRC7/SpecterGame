@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Resource",
+"class": "AbilityResource",
+"language": "GDScript",
+"path": "res://data/abilities/AbilityResource.gd"
+}, {
 "base": "Node2D",
 "class": "BattleConductor",
 "language": "GDScript",
@@ -77,9 +82,10 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "SpecterResource",
 "language": "GDScript",
-"path": "res://specters/SpecterResource.gd"
+"path": "res://data/specters/SpecterResource.gd"
 } ]
 _global_script_class_icons={
+"AbilityResource": "",
 "BattleConductor": "",
 "DialogBox": "",
 "EnemyActor": "",

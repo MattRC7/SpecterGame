@@ -2,13 +2,15 @@ class_name SpecterInstance
 extends Reference
 
 var resource: SpecterResource
+var abilities: Array
 var life_force: LifeForce
 var protected := false
 
 func _init(specter_id: int, life_force_percent = 1.0):
 	assert(life_force_percent > 0.0 && life_force_percent <= 1.0)
-	self.resource = load("res://specters/specter_"+str(specter_id)+".tres")
+	self.resource = load("res://data/specters/specter_"+str(specter_id)+".tres")
 	assert(self.resource)
+	resource.init_abilities()
 	self.life_force = LifeForce.new(resource.max_life_force, floor(resource.max_life_force*life_force_percent) as int)
 
 func idle_life_force() -> int:

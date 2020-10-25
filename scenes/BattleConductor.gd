@@ -36,11 +36,9 @@ func _ready():
 	player_specter_lifebar = get_node("GUILayer/PlayerLifeBar/SpecterLifeBar")
 
 	var err = self.connect("execute_turn", self, "_execute_turn")
-	if err:
-		get_tree().quit(err)
+	if err: get_tree().quit(err)
 	err = self.connect("end_battle", self, "_end_battle")
-	if err:
-		get_tree().quit(err)
+	if err: get_tree().quit(err)
 
 func start_battle(enemy_instance: SpecterInstance) -> void:
 	enemy = enemy_instance
@@ -131,7 +129,8 @@ func _end_battle(won: bool, bonded = false):
 
 func _get_enemy_action():
 	var available_abilities = enemy.get_available_abilities();
-	return available_abilities[(randi() % len(available_abilities))]
+	var selected_ability: AbilityResource = available_abilities[(randi() % len(available_abilities))]
+	return selected_ability.key || 'UNKNOWN'
 
 func _request_player_actions():
 	var specter_action = ""
