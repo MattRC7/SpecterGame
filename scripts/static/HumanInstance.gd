@@ -5,8 +5,16 @@ var life_force: LifeForce
 var scared := false setget _set_scared, _get_scared
 var scared_cooldown := 0
 
-func _init(max_life_force: int, current_life_force: int):
-	self.life_force = LifeForce.new(max_life_force, current_life_force)
+var specters: Array
+var awake_specter: SpecterInstance = null
+
+func _init(max_life_force: int, init_specters: Array):
+	self.life_force = LifeForce.new(max_life_force, max_life_force)
+	specters = []
+	for specter in init_specters:
+		if specter is SpecterInstance:
+			specters.push_back(specter)
+	print(specters)
 
 func receive_damage(damage: int) -> int:
 	assert(damage > 0)

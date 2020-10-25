@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 key = "PHASE_SHIFT"
 name = "Phase Shift"
+description = ""
 type = "SPECTRAL"
 inflict_damage = false
 damage = 0

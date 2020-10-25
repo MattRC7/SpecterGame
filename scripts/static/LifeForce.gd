@@ -2,18 +2,17 @@ class_name LifeForce
 extends Reference
 
 var maximum := 1 setget _set_maximum
-var current := 1 setget _set_current, _get_current
-
-func _set_maximum(_value: int) -> int:
-	return maximum
+var current := 1 setget _set_current
 
 func _init(maximium: int, initial = 0):
 	maximum = maximium
 	self._set_current(initial)
 	
-func _get_current() -> int:
-	return current
-	
+func _set_maximum(new_maximum: int) -> int:
+	maximum = new_maximum
+	current = max(0, min(maximum, current)) as int
+	return maximum
+
 func _set_current(new_life_force: int) -> int:
 	current = max(0, min(maximum, new_life_force)) as int
 	return current

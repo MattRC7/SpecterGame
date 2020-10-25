@@ -13,7 +13,7 @@ func _refresh_menu():
 	_add_bar(
 		"Human",
 		game_root.compute_player_life_force(),
-		game_root.player_total_life_force
+		game_root.life_force_capacity
 	)
 
 	for specter in game_root.bonded_specters:

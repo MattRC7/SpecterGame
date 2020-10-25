@@ -3,6 +3,7 @@ extends Resource
 
 export var key: String
 export var name: String
+export var description: String
 export var type: String
 export var inflict_damage := false
 export var damage: int

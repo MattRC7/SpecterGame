@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 key = "SCARE"
 name = "Scare"
+description = ""
 type = "PSYCHIC"
 inflict_damage = true
 damage = 6

@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 key = "ZAP"
 name = "Zap"
+description = "Attack the target specter with a jolt of energy."
 type = "SPECTRAL"
 inflict_damage = true
 damage = 10

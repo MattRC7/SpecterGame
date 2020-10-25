@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 key = "WOUND"
 name = "Wound"
+description = ""
 type = "VITAL"
 inflict_damage = true
 damage = 12
