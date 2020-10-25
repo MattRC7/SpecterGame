@@ -10,10 +10,9 @@ func _ready():
 	assert(enemy_id > 0);
 	assert(enemy_life_percent > 0 && enemy_life_percent <= 100)
 	randomize()
-	_start_battle()
+	call_deferred('_start_battle')
 
 func _start_battle():
-	yield(get_tree().create_timer(0.0), \"timeout\") # Change to deferred call
 	GameRoot.add_bonded_specter(SpecterInstance.new(1))
 	GameRoot.initiate_battle(SpecterInstance.new(enemy_id, enemy_life_percent))
 "
