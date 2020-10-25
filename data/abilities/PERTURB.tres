@@ -6,7 +6,8 @@
 script = ExtResource( 1 )
 key = "PERTURB"
 name = "Perturb"
-description = ""
+description = "An ability"
+action_text = "uses an ability!"
 type = "PSYCHIC"
 inflict_damage = true
 damage = 16

@@ -6,7 +6,8 @@
 script = ExtResource( 1 )
 key = "WOUND"
 name = "Wound"
-description = ""
+description = "An ability"
+action_text = "uses an ability!"
 type = "VITAL"
 inflict_damage = true
 damage = 12
