@@ -10,11 +10,23 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "Encounter",
+"language": "GDScript",
+"path": "res://Encounter.gd"
+}, {
+"base": "Node2D",
+"class": "Plant",
+"language": "GDScript",
+"path": "res://Plant.gd"
+}, {
+"base": "Node2D",
 "class": "Storm",
 "language": "GDScript",
 "path": "res://Storm.gd"
 } ]
 _global_script_class_icons={
+"Encounter": "",
+"Plant": "",
 "Storm": ""
 }
 
@@ -30,5 +42,6 @@ window/stretch/aspect="keep"
 
 [rendering]
 
+environment/default_clear_color=Color( 0.74, 0.74, 0.74, 1 )
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false
