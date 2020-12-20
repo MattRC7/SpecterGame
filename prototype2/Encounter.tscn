@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Plant.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Storm.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Encounter.gd" type="Script" id=2]
 
 [node name="Encounter" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="Plant" parent="." instance=ExtResource( 1 )]
-position = Vector2( 512, 300 )
+[node name="Storm" parent="." instance=ExtResource( 1 )]
+position = Vector2( 205.41, 131.328 )

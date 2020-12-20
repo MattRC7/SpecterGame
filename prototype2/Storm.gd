@@ -1,18 +1,26 @@
 class_name Storm
 extends Node2D
 
-const energy_delta_rate := -0.2
+const ATTACK_RANGE := 256.0
 
-export var energy := 100
+onready var energy_label: Label = get_node("EnergyLabel");
 
-onready var energy_label := get_node("Label");
+var energy = 100;
 
-var energy_remainder := 0.0
+func _ready():
+	get_tree().create_timer(5.0).connect("timeout", self, "attack");
 
-func _process(delta):
-	energy_remainder += energy_delta_rate*delta
-	if (energy_remainder < 1.0):
-		var energy_delta = ceil(energy_remainder)
-		energy += energy_delta
-		energy_remainder -= energy_delta
-		energy_label.text = 'ENERGY: '+str(energy)
+func _process(_delta):
+	energy_label.text = str(energy);
+
+func attack():
+	var plants: Array = get_tree().get_nodes_in_group('plant');
+	for plant in plants:
+		if self.global_position.distance_to(plant.global_position) <= ATTACK_RANGE:
+			plant.take_damage(3)
+	get_tree().create_timer(5.0).connect("timeout", self, "attack");
+
+func take_damage(damage: int):
+	energy = max(0, energy - damage);
+	if (energy == 0):
+		self.queue_free()
