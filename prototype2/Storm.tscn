@@ -15,6 +15,7 @@ texture = ExtResource( 1 )
 margin_top = -48.0
 margin_bottom = -24.0
 grow_horizontal = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

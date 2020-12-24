@@ -1,10 +1,47 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Storm.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Encounter.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "class_name Storm
+extends Node2D
+
+const ATTACK_RANGE := 256.0
+
+onready var energy_label: Label = get_node(\"EnergyLabel\");
+
+export var max_energy := 1;
+var energy;
+
+func _ready():
+	energy = max_energy;
+	get_tree().create_timer(5.0).connect(\"timeout\", self, \"attack\");
+
+func _process(_delta):
+	energy_label.text = str(energy);
+
+func attack():
+	var plants: Array = get_tree().get_nodes_in_group('plant');
+	for plant in plants:
+		if self.global_position.distance_to(plant.global_position) <= ATTACK_RANGE:
+			plant.take_damage(3)
+	get_tree().create_timer(5.0).connect(\"timeout\", self, \"attack\");
+
+func take_damage(damage: int):
+	energy = max(0, energy - damage);
+	if (energy == 0):
+		self.queue_free()
+"
 
 [node name="Encounter" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Storm" parent="." instance=ExtResource( 1 )]
-position = Vector2( 205.41, 131.328 )
+position = Vector2( 319.901, 205.41 )
+script = SubResource( 1 )
+max_energy = 20
+
+[node name="Storm2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 676.844, 323.269 )
+max_energy = 20

@@ -5,9 +5,11 @@ const ATTACK_RANGE := 256.0
 
 onready var energy_label: Label = get_node("EnergyLabel");
 
-var energy = 100;
+export var max_energy := 1;
+var energy;
 
 func _ready():
+	energy = max_energy;
 	get_tree().create_timer(5.0).connect("timeout", self, "attack");
 
 func _process(_delta):
