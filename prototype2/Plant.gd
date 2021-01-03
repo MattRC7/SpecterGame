@@ -38,8 +38,11 @@ func grow(delta: float):
 	if level == 0 and life >= 5:
 		sprout()
 
-func take_damage(damage: int):
+func take_damage(damage: float):
 	if level > 0:
-		life = max(0, life - damage);
-		if (life == 0):
-			self.queue_free()
+		life_remainder = life_remainder - max(0.0, damage);
+		if life_remainder < -1.0:
+			life = max(0, life + ceil(life_remainder));
+			if (life == 0):
+				self.queue_free()
+			life_remainder = life_remainder - ceil(life_remainder)
