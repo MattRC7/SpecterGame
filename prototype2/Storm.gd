@@ -2,7 +2,7 @@ class_name Storm
 extends Node2D
 
 const ATTACK_RANGE := 256.0
-const POWER := 0.6
+const POWER := 2.0
 
 onready var energy_label: Label = get_node("EnergyLabel");
 
@@ -23,8 +23,10 @@ func prepare_attack():
 func attack(delta):
 	var plants: Array = get_tree().get_nodes_in_group('plant');
 	for plant in plants:
-		if self.global_position.distance_to(plant.global_position) <= ATTACK_RANGE:
-			plant.take_damage(POWER*delta)
+		var distance = self.global_position.distance_to(plant.global_position)
+		if distance < ATTACK_RANGE:
+			var dist_ratio = pow(ATTACK_RANGE - distance, 2)/pow(ATTACK_RANGE, 2)
+			plant.take_damage(POWER*delta*dist_ratio)
 	prepare_attack();
 
 func take_damage(damage: float):

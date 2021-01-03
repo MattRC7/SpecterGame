@@ -15,7 +15,8 @@ var life_remainder := 0.0
 
 func _process(delta):
 	if (level > 0):
-		attack(delta)
+		pass
+		# attack(delta)
 	grow(delta)
 	hp_label.text = str(life);
 
