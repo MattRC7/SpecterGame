@@ -7,15 +7,16 @@ const POWER := 2.0
 onready var energy_label: Label = get_node("EnergyLabel");
 
 export var max_energy := 1;
-var energy;
-var energy_remainder := 0.0;
+var energy: RollingInt;
 
 func _ready():
-	energy = max_energy;
+	energy = RollingInt.new(max_energy, 0.0, max_energy);
 	prepare_attack();
 
 func _process(_delta):
-	energy_label.text = str(energy);
+	if (energy.val == 0):
+		self.queue_free()
+	energy_label.text = str(energy.val);
 
 func prepare_attack():
 	get_tree().create_timer(5.0).connect("timeout", self, "attack", [5.0]);
@@ -30,9 +31,4 @@ func attack(delta):
 	prepare_attack();
 
 func take_damage(damage: float):
-	energy_remainder = energy_remainder - max(0.0, damage);
-	if energy_remainder < -1.0:
-		energy = max(0, energy + ceil(energy_remainder));
-		if (energy == 0):
-			self.queue_free()
-		energy_remainder = energy_remainder - ceil(energy_remainder)
+	energy.change(-damage)
