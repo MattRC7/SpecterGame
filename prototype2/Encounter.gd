@@ -8,3 +8,7 @@ func _unhandled_input(event):
 			var new_plant: Plant = plant_res.instance()
 			new_plant.position = event.position
 			self.add_child(new_plant)
+	if event.is_action_pressed("game_nourish"):
+		var plants: Array = get_tree().get_nodes_in_group('plant');
+		for plant in plants:
+			(plant as Plant).water.change(3.0)
