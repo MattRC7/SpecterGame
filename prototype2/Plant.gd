@@ -4,7 +4,7 @@ extends Node2D
 const ATTACK_RANGE := 200.0
 export var water_draw := 1.0
 export var energy_draw := 1.0
-export var growth_rate := 2.0
+export var growth_rate := 1.0
 
 onready var plant_sprite: Sprite = get_node("PlantSprite");
 onready var seed_sprite: Sprite = get_node("SeedSprite");
@@ -13,13 +13,13 @@ onready var hp_label: Label = get_node("HPLabel");
 var level := 0;
 
 var water := RollingInt.new(5);
-
-var life := 1;
-var life_remainder := 0.0
+var life := RollingInt.new(10, 0, 1);
 
 func _process(delta):
+	if (life.val == 0):
+		self.queue_free()
 	grow(delta)
-	hp_label.text = str(life);
+	hp_label.text = str(life.val);
 
 func sprout():
 	seed_sprite.visible = false;
@@ -33,26 +33,18 @@ func attack(damage: float):
 			storm.take_damage(damage)
 
 func grow(delta: float):
-	if (water.val <= 0.0):
-		take_damage(growth_rate*0.1*delta)
+	if (!water.val):
+		take_damage(growth_rate*0.5*delta)
 		return
-	if (water.val < 1.0):
-		water.change(-water_draw*delta/2.0)
+	if (water.val < water_draw):
+		water.change(-water_draw*delta*0.5)
 		return
 	attack(energy_draw*delta)
 	water.change(-water_draw*delta)
-	life_remainder = life_remainder + max(0, growth_rate*delta);
-	if life_remainder > 1.0:
-		life = max(0, life + floor(life_remainder));
-		life_remainder = life_remainder - floor(life_remainder)
-	if level == 0 and life >= 5:
+	life.change(growth_rate*delta)
+	if level == 0 and life.val >= 5:
 		sprout()
 
 func take_damage(damage: float):
 	if level > 0:
-		life_remainder = life_remainder - max(0.0, damage);
-		if life_remainder < -1.0:
-			life = max(0, life + ceil(life_remainder));
-			if (life == 0):
-				self.queue_free()
-			life_remainder = life_remainder - ceil(life_remainder)
+		life.change(-damage)
