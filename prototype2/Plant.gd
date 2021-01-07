@@ -1,10 +1,10 @@
 class_name Plant
 extends Node2D
 
-const ATTACK_RANGE := 200.0
-export var water_draw := 1.0
-export var energy_draw := 1.0
-export var growth_rate := 1.0
+var energy_draw_range := 200.0
+var water_draw := 1.0
+var energy_draw := 1.0
+var growth_rate := 1.0
 
 onready var plant_sprite: Sprite = get_node("PlantSprite");
 onready var seed_sprite: Sprite = get_node("SeedSprite");
@@ -12,14 +12,21 @@ onready var hp_label: Label = get_node("HPLabel");
 
 var level := 0;
 
-var water := RollingInt.new(5);
-var life := RollingInt.new(10, 0, 1);
+var water := RollingInt.new(0);
+var life := RollingInt.new(0);
 
 func _process(delta):
-	if (life.val == 0):
+	if (level > 0 && life.val == 0):
 		self.queue_free()
 	grow(delta)
-	hp_label.text = str(life.val);
+	var water_indicator;
+	if water.val == water.max_val: water_indicator = 'FULL'
+	elif water.val > (water.max_val as float)/2.0: water_indicator = 'OKAY'
+	elif water.val > (water_draw): water_indicator = 'THIRSTY'
+	elif water.val > 0 or level == 0: water_indicator = 'DRY'
+	else: water_indicator = 'DYING'
+		
+	hp_label.text = str(life.val) + ' ( ' + water_indicator + ' )';
 
 func sprout():
 	seed_sprite.visible = false;
@@ -29,7 +36,7 @@ func sprout():
 func attack(damage: float):
 	var storms: Array = get_tree().get_nodes_in_group('storm');
 	for storm in storms:
-		if self.global_position.distance_to(storm.global_position) < ATTACK_RANGE:
+		if self.global_position.distance_to(storm.global_position) < energy_draw_range:
 			storm.take_damage(damage)
 
 func grow(delta: float):
