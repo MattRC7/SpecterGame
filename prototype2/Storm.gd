@@ -1,10 +1,12 @@
 class_name Storm
 extends Node2D
 
-const ATTACK_RANGE := 256.0
-const POWER := 2.0
-
 onready var energy_label: Label = get_node("EnergyLabel");
+
+export var attack_range := 256.0
+export var attack_power := 1.0
+export var attack_frequency := 2.5;
+export var attack_dropoff := 1.0;
 
 export var max_energy := 1;
 var energy: RollingInt;
@@ -19,15 +21,17 @@ func _process(_delta):
 	energy_label.text = str(energy.val);
 
 func prepare_attack():
-	get_tree().create_timer(5.0).connect("timeout", self, "attack", [5.0]);
+	get_tree().create_timer(attack_frequency).connect(
+		"timeout", self, "attack", [attack_frequency]
+	);
 
 func attack(delta):
 	var plants: Array = get_tree().get_nodes_in_group('plant');
 	for plant in plants:
 		var distance = self.global_position.distance_to(plant.global_position)
-		if distance < ATTACK_RANGE:
-			var dist_ratio = pow(ATTACK_RANGE - distance, 2)/pow(ATTACK_RANGE, 2)
-			plant.take_damage(POWER*delta*dist_ratio)
+		if distance < attack_range:
+			var dist_ratio = pow(attack_range - distance, 2)/pow(attack_range, 2)
+			plant.take_damage(attack_power*delta*dist_ratio)
 	prepare_attack();
 
 func take_damage(damage: float):
