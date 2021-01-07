@@ -1,2 +1,2 @@
 git_api.*
-bin/x11
+**/bin/x11
