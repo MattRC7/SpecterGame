@@ -38,13 +38,14 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Specter"
+config/name="Plant Game"
+run/main_scene="res://Encounter.tscn"
 config/icon="res://icon.png"
 
 [display]
 
 window/stretch/mode="viewport"
-window/stretch/aspect="keep"
+window/stretch/aspect="keep_width"
 
 [input]
 
