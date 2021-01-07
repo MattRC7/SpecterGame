@@ -56,6 +56,7 @@ window/stretch/aspect="keep_width"
 [gdnative]
 
 singletons=[ "res://git_api.gdnlib" ]
+singletons_disabled=[ "res://git_api.gdnlib" ]
 
 [input]
 
