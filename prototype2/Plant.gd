@@ -9,6 +9,7 @@ var growth_rate := 1.0
 onready var plant_sprite: Sprite = get_node("PlantSprite");
 onready var seed_sprite: Sprite = get_node("SeedSprite");
 onready var hp_label: Label = get_node("HPLabel");
+onready var water_label: Label = get_node("WaterLabel")
 
 var level := 0;
 
@@ -19,6 +20,7 @@ func _process(delta):
 	if (level > 0 && life.val == 0):
 		self.queue_free()
 	grow(delta)
+
 	var water_indicator;
 	if water.val == water.max_val: water_indicator = 'FULL'
 	elif water.val > (water.max_val as float)/2.0: water_indicator = 'OKAY'
@@ -26,7 +28,8 @@ func _process(delta):
 	elif water.val > 0 or level == 0: water_indicator = 'DRY'
 	else: water_indicator = 'DYING'
 		
-	hp_label.text = str(life.val) + ' ( ' + water_indicator + ' )';
+	hp_label.text = 'HP: ' + str(life.val) + ' (Lv. ' + str(level) + ' ) ';
+	water_label.text = 'VITA: ' + str(water.val) + ' ( ' + water_indicator + ' )';
 
 func sprout():
 	seed_sprite.visible = false;
@@ -49,7 +52,7 @@ func grow(delta: float):
 	attack(energy_draw*delta)
 	water.change(-water_draw*delta)
 	life.change(growth_rate*delta)
-	if level == 0 and life.val >= 5:
+	if level == 0 and life.val >= 4:
 		sprout()
 
 func take_damage(damage: float):

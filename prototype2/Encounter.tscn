@@ -9,12 +9,13 @@ water_rate = 3.0
 plant_water_capacity = 7
 plant_water_draw = 0.3
 plant_energy_draw = 0.2
-plant_growth_rate = 0.8
+plant_growth_rate = 0.6
 
 [node name="Storm" parent="." instance=ExtResource( 1 )]
 position = Vector2( 501.74, 291.84 )
-attack_power = 3.0
-attack_dropoff = 1.5
+attack_power = 2.0
+attack_frequency = 3.0
+attack_dropoff = 0.75
 max_energy = 50
 
 [node name="WaterLabel" type="Label" parent="."]
