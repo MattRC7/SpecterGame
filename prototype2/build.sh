@@ -1,20 +1,42 @@
 #!/bin/bash
 
-if [[ $# -ne 2 || ! $1 || ! $2 ]]; then
-    echo "Usage: build.sh [filename] [export_path]"
+if [[ $# -ne 3 || ! $1 || ! $2 || ! $3 ]]; then
+    echo "Usage: build.sh [description] [version] [export_path]"
     exit 1;
 fi
 
-if [[ ! -d $2 || ! -w $2 ]]; then
-    echo "Path $2 must be a writeable directory."
+description=$1
+
+IFS='.' read -ra versions <<< "$2"
+major=${versions[0]}
+minor=${versions[1]}
+patch=${versions[2]}
+if [[ ! -n $major || ! -n $minor  || ! -n $patch ]]; then
+    echo "version must be in the form [major].[minor].[patch]";
     exit 2;
 fi
+
+export_path=$3
+if [[ ! -d $export_path || ! -w $export_path ]]; then
+    echo "Path $export_path must be a writeable directory."
+    exit 3;
+fi
+
+label="$major.$minor.$patch"
+echo "Tagging HEAD with label $label"
+git tag -a -m "$description" "$label" || exit 4;
 
 echo "Wiping build directory..."
 rm -rv ./build
 
+filename="${description}_${major}_${minor}_${patch}"
+
 echo "Building and exporting for Windows...";
-mkdir -p ./build/windows && godot3 --quiet --export-debug "Windows Desktop" "build/windows/$1.exe" && zip "$2/$1_windows.zip" build/windows/$1.*
+mkdir -p ./build/windows \
+&& godot3 --quiet --export-debug "Windows Desktop" "build/windows/$filename.exe" \
+&& zip "$export_path/${filename}_windows.zip" build/windows/${filename}.*
 
 echo "Building and exporting for Linux...";
-mkdir -p ./build/linux && godot3 --quiet --export-debug "Linux/X11" "build/linux/$1.x86_64" && tar -cvzf "$2/$1_linux.tar.gz" build/linux/$1.*
+mkdir -p ./build/linux \
+&& godot3 --quiet --export-debug "Linux/X11" "build/linux/$filename.x86_64" \
+&& tar -cvzf "$export_path/${filename}_linux.tar.gz" build/linux/${filename}.*
