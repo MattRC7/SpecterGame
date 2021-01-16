@@ -16,27 +16,55 @@ if [[ ! -n $major || ! -n $minor  || ! -n $patch ]]; then
     exit 2;
 fi
 
+# Set Git Label
+label="$major.$minor.$patch"
+current_tag=$(git tag --points-at)
+if [[ -n "$current_tag" ]]; then
+    if [[ $label != "$current_tag" ]]; then
+        echo "HEAD is already tagged with version $current_tag";
+        exit 4;
+    fi
+else
+    if [[ -n $(git tag -l $label) ]]; then
+        echo "Version $label is already set to a different commit."
+        exit 4;
+    else
+        echo "Tagging HEAD with label $label"
+        git tag -a -m "$description" "$label" || exit 4;
+    fi
+fi
+
 export_path=$3
 if [[ ! -d $export_path || ! -w $export_path ]]; then
     echo "Path $export_path must be a writeable directory."
     exit 3;
 fi
 
-label="$major.$minor.$patch"
-echo "Tagging HEAD with label $label"
-git tag -a -m "$description" "$label" || exit 4;
+# Create export subdirectory
+export_path=${export_path}/${major}_${minor}_${patch}
+echo "Creating export subdirectory ${export_path}/${major}_${minor}_${patch}...";
+mkdir -vp "$export_path" || exit 5;
 
-echo "Wiping build directory..."
-rm -rv ./build
+# Wipe build directory
+if [[ -d ./build ]]; then
+    echo "Wiping build directory..."
+    rm -rv ./build || exit 5;
+    mkdir -vp ./build || exit 5;
+fi
 
 filename="${description}_${major}_${minor}_${patch}"
+homepath=$(pwd);
 
-echo "Building and exporting for Windows...";
-mkdir -p ./build/windows \
-&& godot3 --quiet --export-debug "Windows Desktop" "build/windows/$filename.exe" \
-&& zip "$export_path/${filename}_windows.zip" build/windows/${filename}.*
+printf "\nBuilding and exporting for Windows...\n\n";
+mkdir -vp ./build/windows || exit 5;
+godot3 --quiet --export-debug "Windows Desktop" "build/windows/$filename.exe" || exit 6;
+cd build/windows;
+zip "$export_path/${filename}_windows.zip" ./${filename}.* || exit 7;
 
-echo "Building and exporting for Linux...";
-mkdir -p ./build/linux \
-&& godot3 --quiet --export-debug "Linux/X11" "build/linux/$filename.x86_64" \
-&& tar -cvzf "$export_path/${filename}_linux.tar.gz" build/linux/${filename}.*
+cd "$homepath"
+
+printf "\nBuilding and exporting for Linux...\n\n";
+mkdir -vp ./build/linux || exit 5;
+godot3 --quiet --export-debug "Linux/X11" "build/linux/$filename.x86_64" || exit 6;
+cd build/linux
+tar -cvzf "$export_path/${filename}_linux.tar.gz" ./${filename}.* || exit 7;
