@@ -1,16 +1,12 @@
 class_name Player
 extends Node2D
 
-signal plant_seed;
-
 const UP := 'player_up';
 const DOWN := 'player_down';
 const LEFT := 'player_left';
 const RIGHT := 'player_right';
 
 const SPEED := 256.0
-
-onready var seed_planter = get_node("SeedPlanter");
 
 var pressed := {
 	UP: false,
@@ -27,8 +23,9 @@ func _process(delta):
 
 func _unhandled_input(event):
 	if event.is_action_pressed("game_sow"):
-		var new_plant = seed_planter.plant_seed();
-		emit_signal("plant_seed", new_plant, position + Vector2(0, 16));
+		var new_plant = Plant.create(load('res://resources/DemoPlant.tres'));
+		get_parent().add_child(new_plant);
+		new_plant.position = position + Vector2(16, 16);
 		get_viewport().set_input_as_handled();
 	return;
 

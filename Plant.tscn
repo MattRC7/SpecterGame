@@ -1,8 +1,24 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Plant.gd" type="Script" id=1]
 [ext_resource path="res://assets/seed.png" type="Texture" id=2]
 [ext_resource path="res://assets/plant.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "drop"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("SeedSprite:offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 2.54912, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -32 ), Vector2( 0, -8 ) ]
+}
 
 [node name="Plant" type="Node2D" groups=[
 "plant",
@@ -16,7 +32,7 @@ offset = Vector2( 0, -16 )
 
 [node name="SeedSprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-offset = Vector2( 0, -8 )
+offset = Vector2( 0, -32 )
 
 [node name="HPLabel" type="Label" parent="."]
 margin_top = 8.0
@@ -35,3 +51,6 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/drop = SubResource( 1 )

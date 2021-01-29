@@ -8,6 +8,7 @@ var growth_rate := 1.0
 
 onready var plant_sprite: Sprite = get_node("PlantSprite");
 onready var seed_sprite: Sprite = get_node("SeedSprite");
+var animator: AnimationPlayer;
 onready var hp_label: Label = get_node("HPLabel");
 onready var water_label: Label = get_node("WaterLabel")
 
@@ -15,6 +16,19 @@ var level := 0;
 
 var water := RollingInt.new(0);
 var life := RollingInt.new(0);
+
+static func create(res: PlantRes):
+	var plant_scene: PackedScene = load('res://Plant.tscn');
+	var new_plant: Plant = plant_scene.instance();
+	new_plant.life = RollingInt.new(res.life_capacity)
+	new_plant.energy_draw = res.energy_draw;
+	new_plant.water_draw = res.water_draw;
+	new_plant.growth_rate = res.growth_rate;
+	return new_plant
+
+func _ready():
+	animator = get_node("AnimationPlayer");
+	animator.play('drop');
 
 func _process(delta):
 	if (level > 0 && life.val == 0):
