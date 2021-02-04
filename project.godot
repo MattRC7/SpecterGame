@@ -24,20 +24,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Plant.gd"
 }, {
+"base": "Node",
+"class": "PlantPhaseController",
+"language": "GDScript",
+"path": "res://PlantPhaseController.gd"
+}, {
+"base": "Resource",
+"class": "PlantPhaseRes",
+"language": "GDScript",
+"path": "res://resources/plants/PlantPhaseRes.gd"
+}, {
 "base": "Resource",
 "class": "PlantRes",
 "language": "GDScript",
-"path": "res://resources/PlantRes.gd"
+"path": "res://resources/plants/PlantRes.gd"
 }, {
 "base": "Node2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player.gd"
 }, {
-"base": "Object",
-"class": "RollingInt",
+"base": "Node",
+"class": "SmartInteger",
 "language": "GDScript",
-"path": "res://RollingInt.gd"
+"path": "res://SmartInteger.gd"
 }, {
 "base": "Node2D",
 "class": "Storm",
@@ -48,16 +58,18 @@ _global_script_class_icons={
 "Encounter": "",
 "GitAPI": "",
 "Plant": "",
+"PlantPhaseController": "",
+"PlantPhaseRes": "",
 "PlantRes": "",
 "Player": "",
-"RollingInt": "",
+"SmartInteger": "",
 "Storm": ""
 }
 
 [application]
 
 config/name="Plant Game"
-run/main_scene="res://Encounter.tscn"
+run/main_scene="res://Level.tscn"
 config/icon="res://icon.png"
 
 [display]

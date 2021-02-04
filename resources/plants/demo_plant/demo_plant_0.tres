@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/plants/PlantPhaseRes.gd" type="Script" id=1]
+[ext_resource path="res://assets/seed.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+texture = ExtResource( 2 )
+life_capacity = 5
+water_capacity = 5
+water_draw = 0.1
+energy_draw = 0.1
+energy_draw_range = 50
+growth_rate = 0.4
