@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "GameData",
+"language": "GDScript",
+"path": "res://resources/plants/GameData.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -45,6 +50,7 @@ _global_script_classes=[ {
 "path": "res://SmartInteger.gd"
 } ]
 _global_script_class_icons={
+"GameData": "",
 "GitAPI": "",
 "Plant": "",
 "PlantPhaseController": "",

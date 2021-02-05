@@ -19,7 +19,7 @@ func is_max_level() -> bool:
 	return current_level == max_level();
 
 func max_level() -> int:
-	return phases.size() if phases else 0;
+	return phases.size() - 1 if phases else 0;
 
 func current_phase() -> PlantPhaseRes:
 	return phases[current_level] if phases && phases[current_level] else null;

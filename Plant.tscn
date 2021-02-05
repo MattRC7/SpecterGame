@@ -6,7 +6,8 @@
 [ext_resource path="res://resources/plants/PlantRes.gd" type="Script" id=4]
 [ext_resource path="res://assets/seed.png" type="Texture" id=5]
 
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=1]
+resource_name = "Placeholder Lv 0"
 script = ExtResource( 2 )
 texture = ExtResource( 5 )
 life_capacity = 1
@@ -16,13 +17,13 @@ energy_draw = 1.0
 energy_draw_range = 1
 growth_rate = 1.0
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=2]
+resource_name = "Placeholder"
 script = ExtResource( 4 )
-plant_name = "default"
-phases = [ SubResource( 2 ) ]
+plant_name = "placeholder"
+phases = [ SubResource( 1 ) ]
 
-[sub_resource type="Animation" id=1]
-resource_name = "drop"
+[sub_resource type="Animation" id=3]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlantSprite:position")
@@ -41,14 +42,14 @@ tracks/0/keys = {
 "plant",
 ]]
 script = ExtResource( 1 )
-plant_resource = SubResource( 3 )
+plant_resource = SubResource( 2 )
 
 [node name="PlantSprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 offset = Vector2( 0, -16 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/drop = SubResource( 1 )
+anims/drop = SubResource( 3 )
 
 [node name="HPLabel" type="Label" parent="."]
 margin_top = 8.0
