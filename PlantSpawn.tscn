@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://PlantSpawn.gd" type="Script" id=1]
-[ext_resource path="res://resources/plants/demo_plant/demo_plant.tres" type="Resource" id=2]
-
-[node name="PlantSpawn" type="Node2D"]
-script = ExtResource( 1 )
-plant_spec = ExtResource( 2 )

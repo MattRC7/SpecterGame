@@ -1,9 +1,25 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Plant.gd" type="Script" id=1]
-[ext_resource path="res://SmartInteger.gd" type="Script" id=2]
+[ext_resource path="res://resources/plants/PlantPhaseRes.gd" type="Script" id=2]
 [ext_resource path="res://assets/plant.png" type="Texture" id=3]
-[ext_resource path="res://PlantPhaseController.gd" type="Script" id=4]
+[ext_resource path="res://resources/plants/PlantRes.gd" type="Script" id=4]
+[ext_resource path="res://assets/seed.png" type="Texture" id=5]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+texture = ExtResource( 5 )
+life_capacity = 1
+water_capacity = 1
+water_draw = 1.0
+energy_draw = 1.0
+energy_draw_range = 1
+growth_rate = 1.0
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 4 )
+plant_name = "default"
+phases = [ SubResource( 2 ) ]
 
 [sub_resource type="Animation" id=1]
 resource_name = "drop"
@@ -25,18 +41,9 @@ tracks/0/keys = {
 "plant",
 ]]
 script = ExtResource( 1 )
-
-[node name="Life" type="Node" parent="."]
-script = ExtResource( 2 )
-
-[node name="Water" type="Node" parent="."]
-script = ExtResource( 2 )
-
-[node name="PlantPhaseController" type="Node" parent="."]
-script = ExtResource( 4 )
+plant_resource = SubResource( 3 )
 
 [node name="PlantSprite" type="Sprite" parent="."]
-position = Vector2( 0, -24 )
 texture = ExtResource( 3 )
 offset = Vector2( 0, -16 )
 
@@ -47,6 +54,7 @@ anims/drop = SubResource( 1 )
 margin_top = 8.0
 grow_horizontal = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "HP"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -56,6 +64,7 @@ __meta__ = {
 margin_top = 24.0
 grow_horizontal = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Vita"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
-"class": "Encounter",
-"language": "GDScript",
-"path": "res://Encounter.gd"
-}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -24,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Plant.gd"
 }, {
-"base": "Node",
+"base": "Object",
 "class": "PlantPhaseController",
 "language": "GDScript",
 "path": "res://PlantPhaseController.gd"
@@ -44,26 +39,19 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Player.gd"
 }, {
-"base": "Node",
+"base": "Object",
 "class": "SmartInteger",
 "language": "GDScript",
 "path": "res://SmartInteger.gd"
-}, {
-"base": "Node2D",
-"class": "Storm",
-"language": "GDScript",
-"path": "res://Storm.gd"
 } ]
 _global_script_class_icons={
-"Encounter": "",
 "GitAPI": "",
 "Plant": "",
 "PlantPhaseController": "",
 "PlantPhaseRes": "",
 "PlantRes": "",
 "Player": "",
-"SmartInteger": "",
-"Storm": ""
+"SmartInteger": ""
 }
 
 [application]

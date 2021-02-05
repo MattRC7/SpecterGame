@@ -1,8 +1,17 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Plant.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/plants/demo_plant/demo_plant.tres" type="Resource" id=3]
 
 [node name="Level" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 531.687, 308.681 )
+
+[node name="Plant" parent="." instance=ExtResource( 2 )]
+position = Vector2( 663.978, 306.161 )
+initial_level = 1
+initial_life = 6
+initial_water = 8
+plant_resource = ExtResource( 3 )

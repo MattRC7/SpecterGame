@@ -1,5 +1,5 @@
 class_name SmartInteger
-extends Node;
+extends Object;
 
 var max_val := 1 setget _set_max_val;
 func _set_max_val(new_max):
@@ -16,6 +16,11 @@ func _set_current_val(new_value):
 	value = int(max(min_val, min(max_val, new_value)))
 
 var remainder := 0.0;
+
+func _init(init_max := 1, init_current := 0, init_min := 0):
+	_set_max_val(init_max);
+	_set_min_val(init_min);
+	_set_current_val(init_current);
 
 func change(delta: float):
 	remainder = remainder + delta;

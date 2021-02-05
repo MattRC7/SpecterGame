@@ -1,6 +1,26 @@
 class_name Plant
 extends Node2D
 
+static func create(plant_res: PlantRes, init_level := 0, init_life := 0, init_water := 0):
+	var new_plant: Plant = load('res://Plant.tscn').instance();
+	new_plant.plant_resource = plant_res;
+	new_plant.initial_level = init_level;
+	new_plant.initial_life = init_life;
+	new_plant.initial_water = init_water;
+	return new_plant;
+
+export var initial_level := 0;
+export var initial_life := 0;
+export var initial_water := 0;
+export var plant_resource: Resource setget _set_resource;
+func _set_resource(new_res: Resource):
+	if initialized: push_error('Cannot change plant resource after initialization')
+	elif new_res is PlantRes: plant_resource = new_res
+	else: push_error(
+		'plant_resource should be PlantRes: received '+to_json(new_res)
+	)
+
+var initialized := false;
 var sprite: Sprite;
 var hp_label: Label;
 var water_label: Label;
@@ -9,46 +29,29 @@ var water: SmartInteger;
 var life: SmartInteger;
 var phase_ctrl: PlantPhaseController;
 
-var spec: PlantRes setget _set_spec;
-func _set_spec(new_spec: PlantRes):
-	spec = new_spec;
-	if phase_ctrl: phase_ctrl.add_phases_from_spec(spec)
-
-static func create(plant_spec: PlantRes, initial_level := 0, initial_life := 0, initial_water := 0):
-	var plant_scene: PackedScene = load('res://Plant.tscn');
-	var new_plant: Plant = plant_scene.instance();
-	new_plant.spec = plant_spec;
-	new_plant.phase_ctrl.current_level = initial_level;
-	new_plant.life.value = initial_life;
-	new_plant.water.value = initial_water;
-	return new_plant;
-
-func _notification(what):
-	if what == NOTIFICATION_INSTANCED:
-		_setup_nodes_and_signals();
-
 func _ready():
-	_setup_nodes_and_signals();
-	animator.play('drop');
-
-func _setup_nodes_and_signals():
 	sprite = get_node("PlantSprite");
 	animator = get_node("AnimationPlayer");
 	hp_label = get_node("HPLabel");
 	water_label = get_node("WaterLabel")
-	water = get_node("Water");
-	life = get_node("Life");
-	phase_ctrl = get_node("PlantPhaseController");
-	if !phase_ctrl.is_connected("new_phase", self,"_on_change_phase"):
-		var status = phase_ctrl.connect("new_phase", self, "_on_change_phase");
-		if status != OK: push_error('Failed to connect plant to new_phases signal: '+status);
+	phase_ctrl = PlantPhaseController.new(plant_resource, initial_level);
+	var phase: PlantPhaseRes = phase_ctrl.current_phase()
+	_update_sprite(phase.texture);
+	water = SmartInteger.new(phase.water_capacity, initial_water);
+	life = SmartInteger.new(phase.life_capacity, initial_life);
+	var status = phase_ctrl.connect("new_phase", self, "_on_change_phase");
+	if status != OK: push_error('Failed to connect plant to new_phases signal: '+status);
+	initialized = true
 
 func _on_change_phase():
-	var phase: PlantPhaseRes = phase_ctrl.current_phase()
-	sprite.texture = phase.texture
-	sprite.offset = Vector2(0, -float(sprite.texture.get_height())/2.0);
+	var phase = phase_ctrl.current_phase();
+	_update_sprite(phase.texture);
 	water.max_val = phase.water_capacity
 	life.max_val = phase.life_capacity
+
+func _update_sprite(new_texture: StreamTexture):
+	sprite.texture = new_texture;
+	sprite.offset = Vector2(0, -float(sprite.texture.get_height())/2.0);
 
 func _process(delta):
 	var level = phase_ctrl.current_level
@@ -91,3 +94,6 @@ func attack(damage: float):
 func take_damage(damage: float):
 	if phase_ctrl.current_level > 0:
 		life.change(-damage)
+
+func drop():
+	animator.play('drop')
