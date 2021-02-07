@@ -23,7 +23,6 @@ func _process(delta):
 
 func _unhandled_input(event):
 	if event.is_action_pressed("game_sow"):
-		print(GameData.Plants.DEMO_PLANT)
 		var new_plant = Plant.create(GameData.Plants.DEMO_PLANT, 0, 0, 0);
 		new_plant.position = position + Vector2(16, 16);
 		get_parent().add_child(new_plant);
