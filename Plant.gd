@@ -81,9 +81,17 @@ func grow(delta: float):
 		return
 	attack(phase.energy_draw*delta)
 	water.change(-phase.water_draw*delta)
-	life.change(phase.growth_rate*delta)
-	if not phase_ctrl.is_max_level() and life.value >= phase.life_capacity:
-		phase_ctrl.current_level += 1
+	if phase_ctrl.is_max_level() && life.value == phase.life_capacity:
+		var fruit = get_node_or_null('Fruit');
+		if fruit && fruit is Fruit:
+			fruit.grow(delta/2.0);
+		else:
+			fruit = load("res://Fruit.tscn").instance();
+			add_child_below_node(sprite, fruit);
+	else:
+		life.change(phase.growth_rate*delta)
+		if life.value >= phase.life_capacity:
+			phase_ctrl.current_level += 1
 
 func attack(damage: float):
 	var storms: Array = get_tree().get_nodes_in_group('storm');

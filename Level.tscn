@@ -13,7 +13,7 @@ position = Vector2( 531.687, 308.681 )
 [node name="Plant" parent="." instance=ExtResource( 2 )]
 position = Vector2( 748.393, 163.79 )
 initial_level = 1
-initial_life = 6
+initial_life = 10
 initial_water = 8
 plant_resource = ExtResource( 3 )
 

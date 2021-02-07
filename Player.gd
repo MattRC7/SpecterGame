@@ -8,12 +8,24 @@ const RIGHT := 'player_right';
 
 const SPEED := 256.0
 
+var picking_area: Area2D;
+var pickable_fruit = [];
+
 var pressed := {
 	UP: false,
 	DOWN: false,
 	LEFT: false,
 	RIGHT: false,
 };
+
+func _ready():
+	picking_area = get_node("PickingArea");
+	var status = picking_area.connect("body_entered", self, "_on_detect_fruit");
+	if status != OK:
+		push_error('Could not connect Player to Area2D event');
+	status = picking_area.connect("body_exited", self, "_on_exit_fruit");
+	if status != OK:
+		push_error('Could not connect Player to Area2D event');
 
 func _process(delta):
 	var y_move = (1 if pressed[DOWN] else 0) - (1 if pressed[UP] else 0)
@@ -31,6 +43,21 @@ func _unhandled_input(event):
 	return;
 
 func _unhandled_key_input(event):
+	if event.is_action_released("game_pick_fruit"):
+		var fruit_to_pick = null;
+		for fruit in pickable_fruit:
+			if fruit.is_ripe():
+				if !fruit_to_pick:
+					fruit_to_pick = fruit;
+				else:
+					var current_dist = fruit_to_pick.global_position.distance_to(global_position);
+					var to_pick_dist = fruit.global_position.distance_to(global_position);
+					if to_pick_dist < current_dist:
+						fruit_to_pick = fruit;
+		if fruit_to_pick is Fruit:
+			pickable_fruit.remove(pickable_fruit.find(fruit_to_pick));
+			fruit_to_pick.queue_free();
+		return;
 	for action in [UP, DOWN, LEFT, RIGHT]:
 		if (_handle_movement_input(event, action)): return
 
@@ -44,3 +71,12 @@ func _handle_movement_input(event: InputEventKey, action):
 		get_tree().set_input_as_handled()
 		return true;
 	return false;
+
+func _on_detect_fruit(fruit: Node):
+	if !pickable_fruit.has(fruit):
+		pickable_fruit.append(fruit);
+
+func _on_exit_fruit(fruit: Node):
+	var index = pickable_fruit.find(fruit);
+	if index >= 0:
+		pickable_fruit.remove(index);
