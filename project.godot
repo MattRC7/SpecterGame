@@ -70,6 +70,7 @@ _global_script_class_icons={
 
 config/name="Plant Game"
 run/main_scene="res://Level.tscn"
+boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
 config/icon="res://icon.png"
 
 [display]
@@ -132,6 +133,6 @@ game_pick_fruit={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.74, 0.74, 0.74, 1 )
+environment/default_clear_color=Color( 0.796078, 0.996078, 0.823529, 1 )
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false

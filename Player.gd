@@ -1,6 +1,8 @@
 class_name Player
 extends Node2D
 
+signal health_changed
+
 const UP := 'player_up';
 const DOWN := 'player_down';
 const LEFT := 'player_left';
@@ -9,7 +11,9 @@ const RIGHT := 'player_right';
 const SPEED := 256.0
 
 var picking_area: Area2D;
-var pickable_fruit = [];
+var pickable_fruit := [];
+export var health_capacity := 10;
+var health := 10.0;
 
 var pressed := {
 	UP: false,
@@ -26,12 +30,16 @@ func _ready():
 	status = picking_area.connect("body_exited", self, "_on_exit_fruit");
 	if status != OK:
 		push_error('Could not connect Player to Area2D event');
+	health = float(health_capacity)
+	emit_signal("health_changed", health/float(health_capacity));
 
 func _process(delta):
 	var y_move = (1 if pressed[DOWN] else 0) - (1 if pressed[UP] else 0)
 	var x_move = (1 if pressed[RIGHT] else 0) - (1 if pressed[LEFT] else 0)
 	var move := Vector2(x_move, y_move).normalized()*SPEED;
 	position = position.move_toward(position + move, delta*SPEED);
+	health = max(0, health-delta/4.0);
+	emit_signal("health_changed", health/float(health_capacity))
 
 func _unhandled_input(event):
 	if event.is_action_pressed("game_sow"):
@@ -55,6 +63,8 @@ func _unhandled_key_input(event):
 					if to_pick_dist < current_dist:
 						fruit_to_pick = fruit;
 		if fruit_to_pick is Fruit:
+			health = min(float(health_capacity), health+3.0)
+			emit_signal("health_changed", health/float(health_capacity))
 			pickable_fruit.remove(pickable_fruit.find(fruit_to_pick));
 			fruit_to_pick.queue_free();
 		return;

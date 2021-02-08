@@ -1,10 +1,27 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player.png" type="Texture" id=2]
+[ext_resource path="res://PlayerUI.gd" type="Script" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 64.0
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 100 )
+colors = PoolColorArray( 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 256
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 1, 0.28125, 0.28125, 1 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
+width = 256
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,3 +35,19 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickingArea"]
 shape = SubResource( 1 )
+
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+script = ExtResource( 3 )
+
+[node name="PlayerHPMax" type="Sprite" parent="PlayerUI"]
+position = Vector2( 16, 552 )
+scale = Vector2( 1, 32 )
+texture = SubResource( 3 )
+centered = false
+
+[node name="PlayerHP" type="Sprite" parent="PlayerUI"]
+position = Vector2( 16, 552 )
+scale = Vector2( 1, 32 )
+texture = SubResource( 5 )
+centered = false
+[connection signal="health_changed" from="." to="PlayerUI" method="_on_health_changed"]
