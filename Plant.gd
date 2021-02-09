@@ -1,5 +1,5 @@
 class_name Plant
-extends Node2D
+extends StaticBody2D
 
 static func create(plant_res: PlantRes, init_level := 0, init_life := 0, init_water := 0):
 	var new_plant: Plant = load('res://Plant.tscn').instance();
@@ -79,7 +79,6 @@ func grow(delta: float):
 	if (water.value < phase.water_draw):
 		water.change(-phase.water_draw*delta*0.5)
 		return
-	attack(phase.energy_draw*delta)
 	water.change(-phase.water_draw*delta)
 	if phase_ctrl.is_max_level() && life.value == phase.life_capacity:
 		var fruit = get_node_or_null('Fruit');
@@ -92,12 +91,6 @@ func grow(delta: float):
 		life.change(phase.growth_rate*delta)
 		if life.value >= phase.life_capacity:
 			phase_ctrl.current_level += 1
-
-func attack(damage: float):
-	var storms: Array = get_tree().get_nodes_in_group('storm');
-	for storm in storms:
-		if self.global_position.distance_to(storm.global_position) < phase_ctrl.current_phase().energy_draw_range:
-			storm.take_damage(damage)
 
 func take_damage(damage: float):
 	if phase_ctrl.current_level > 0:

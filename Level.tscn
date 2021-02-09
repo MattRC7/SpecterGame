@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Plant.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/plants/demo_plant.tres" type="Resource" id=3]
 [ext_resource path="res://Steward.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Storm.gd" type="Script" id=5]
+[ext_resource path="res://assets/storm.png" type="Texture" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 256.0
 
 [node name="Level" type="Node2D"]
 
@@ -12,10 +17,24 @@ position = Vector2( 531.687, 308.681 )
 
 [node name="Plant" parent="." instance=ExtResource( 2 )]
 position = Vector2( 748.393, 163.79 )
+collision_mask = 2147483656
 initial_level = 1
 initial_life = 10
-initial_water = 8
+initial_water = 7
 plant_resource = ExtResource( 3 )
 
 [node name="Steward" parent="." instance=ExtResource( 4 )]
 position = Vector2( 573.264, 309.94 )
+
+[node name="Storm" type="Area2D" parent="."]
+position = Vector2( 724.454, 331.359 )
+collision_layer = 8
+collision_mask = 3
+script = ExtResource( 5 )
+
+[node name="StormShape" type="CollisionShape2D" parent="Storm"]
+shape = SubResource( 1 )
+
+[node name="StormSprite" type="Sprite" parent="Storm"]
+texture = ExtResource( 6 )
+[connection signal="body_entered" from="Storm" to="Storm" method="_on_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Plant.gd" type="Script" id=1]
 [ext_resource path="res://resources/plants/PlantPhaseRes.gd" type="Script" id=2]
@@ -23,6 +23,9 @@ script = ExtResource( 4 )
 plant_name = "placeholder"
 phases = [ SubResource( 1 ) ]
 
+[sub_resource type="CircleShape2D" id=4]
+radius = 16.0
+
 [sub_resource type="Animation" id=3]
 length = 0.3
 tracks/0/type = "value"
@@ -38,11 +41,16 @@ tracks/0/keys = {
 "values": [ Vector2( 0, -24 ), Vector2( 0, 0 ) ]
 }
 
-[node name="Plant" type="Node2D" groups=[
+[node name="Plant" type="StaticBody2D" groups=[
 "plant",
 ]]
+collision_layer = 2
+collision_mask = 2147483664
 script = ExtResource( 1 )
 plant_resource = SubResource( 2 )
+
+[node name="PlantShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 4 )
 
 [node name="PlantSprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )

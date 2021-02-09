@@ -24,7 +24,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://git_api.gdns"
 }, {
-"base": "Node2D",
+"base": "StaticBody2D",
 "class": "Plant",
 "language": "GDScript",
 "path": "res://Plant.gd"
@@ -53,6 +53,11 @@ _global_script_classes=[ {
 "class": "SmartInteger",
 "language": "GDScript",
 "path": "res://SmartInteger.gd"
+}, {
+"base": "Area2D",
+"class": "Storm",
+"language": "GDScript",
+"path": "res://Storm.gd"
 } ]
 _global_script_class_icons={
 "Fruit": "",
@@ -63,7 +68,8 @@ _global_script_class_icons={
 "PlantPhaseRes": "",
 "PlantRes": "",
 "Player": "",
-"SmartInteger": ""
+"SmartInteger": "",
+"Storm": ""
 }
 
 [application]
@@ -130,6 +136,7 @@ game_pick_fruit={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Plant"
 2d_physics/layer_3="Fruit"
+2d_physics/layer_4="Storm"
 
 [rendering]
 

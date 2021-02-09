@@ -13,6 +13,7 @@ const SPEED := 256.0
 var picking_area: Area2D;
 var pickable_fruit := [];
 export var health_capacity := 10;
+export var health_loss_rate := 0.2;
 var health := 10.0;
 
 var pressed := {
@@ -38,7 +39,7 @@ func _process(delta):
 	var x_move = (1 if pressed[RIGHT] else 0) - (1 if pressed[LEFT] else 0)
 	var move := Vector2(x_move, y_move).normalized()*SPEED;
 	position = position.move_toward(position + move, delta*SPEED);
-	health = max(0, health-delta/4.0);
+	health = max(0, health-delta*health_loss_rate);
 	emit_signal("health_changed", health/float(health_capacity))
 
 func _unhandled_input(event):
